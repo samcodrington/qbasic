@@ -43,6 +43,7 @@ int main(){
     Account currentAccount = Login(validAccts); //The 'Login' function validates a valid login and loads the current user account into memory
     
     while (1) {
+        puts("Please Type the Action You Wish To Do");
         cin >> buffer;
         
         if (buffer == "Logout") {
@@ -55,11 +56,16 @@ int main(){
             
         }
         else if (buffer == "Deposit") {
-            bool depComplete = false;
+            bool exit = false;
             do{
-                puts("Enter the Destination Account?");
+                puts("Enter the Destination Account");
                 cin >> buffer;
+                if (buffer == "Exit"){
+                    break;
+                    exit = true;
+                }
             }while(checkValidAccount(currentAccount, buffer))
+            if (exit == true) break;
             
         }
         else if (buffer == "Withdraw") {
@@ -146,7 +152,7 @@ bool checkValidAccount(const Account currentAccount, const string acctNum){
     else{
         if (currentAccount.isAgent) return true;
         else{
-            puts("Attempting Transaction on Invalid Account Number. Please Try Again.")
+            puts("Attempting Transaction on Invalid Account Number. Please Try Again Or Type \"Exit\".")
             return false;
         }
     }
