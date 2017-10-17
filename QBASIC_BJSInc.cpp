@@ -20,6 +20,7 @@ vector<Account> ReadAccountsFile(const string);
 
 Account Login(vector<Account>&);
 Account CreateAccount(Account);
+bool checkValidAccount(const Account, const string acctNum);
 
 // -----Main-----
 int main(){
@@ -54,6 +55,11 @@ int main(){
             
         }
         else if (buffer == "Deposit") {
+            bool depComplete = false;
+            do{
+                puts("Enter the Destination Account?");
+                cin >> buffer;
+            }while(checkValidAccount(currentAccount, buffer))
             
         }
         else if (buffer == "Withdraw") {
@@ -122,6 +128,33 @@ vector<Account> ReadAccountsFile(const string filename) {
     return validAccounts;
 }
 
-Account CreateAccount(Account currentAccount)
+Account CreateAccount(Account currentAccount){
 
+}
+
+//-----------TRANSACTION FUNCTIONS ------------------/
+/**CheckValidDestination is a method which returns true if the account Number is the same as the currentAccount logged on
+ * or if the account is an agent. 
+ * Does not check whether account exists or not!**/
+bool checkValidAccount(const Account currentAccount, const string acctNum){
+    // Check AcctNum exists 
+        /**TODO**/
+
+    // Checks permissions    
+    if(currentAccount.getNum == acctNum) //Check if transaction being done on currently logged in Account
+        return true; //If the account is being
+    else{
+        if (currentAccount.isAgent) return true;
+        else{
+            puts("Attempting Transaction on Invalid Account Number. Please Try Again.")
+            return false;
+        }
+    }
+        
+    
+    
+}
+bool parseDeposit(){
+
+}
 
