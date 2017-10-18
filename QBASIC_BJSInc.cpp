@@ -18,8 +18,8 @@ using namespace std;
 
 vector<Account> ReadAccountsFile(const string);
 
-Account Login(vector<Account>&);
-void CreateAccount(vector<Account>&,bool);
+Account Login(vector<Account> &);
+void CreateAccount(vector<Account> &,bool);
 bool checkValidAccount(const Account, const string acctNum);
 
 // -----Main-----
