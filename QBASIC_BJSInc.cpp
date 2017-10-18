@@ -20,6 +20,7 @@ vector<Account> ReadAccountsFile(const string);
 
 Account Login(vector<Account> &);
 void CreateAccount(vector<Account> &,bool);
+void DeleteAccount(vector<Account> &,bool);
 bool checkValidAccount(const Account, const string acctNum);
 
 // -----Main-----
@@ -53,7 +54,7 @@ int main(){
          CreateAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account   
         }
         else if (buffer == "Deleteaccount") {
-            
+            DeleteAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account
         }
         else if (buffer == "Deposit") {
             bool exit = false;
@@ -166,7 +167,7 @@ bool parseDeposit(){
 
 
 /**CreateAccount is a method which creates and adds a new user defined account to the valid accounts vector by refrence in a void function**/
-void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the enire valid accounts file by refrence so it can easily add another account onto the end. Also accepts the 'isAgent' accessor value from currentAccount
+void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the enire valid accounts file by refrence so it can easily add another account onto the end. Also accepts the 'isAgent' accessor value from currentAccount for the isAgent check
     string newNumber, newName, newPIN, buffer;
     bool newAgent;
     
@@ -235,9 +236,11 @@ void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the 
     cin>>buffer; // If not agent or machine, the program returns to the beginning
     if (buffer =="Machine") {
         newAgent = 0;
+        printf("User account has been created with Number: \"%s\", Name: \"%s\", and PIN: \"%s\"",newNumber.c_str(), newName.c_str(), newPIN.c_str());
     }
     else if (buffer == "Agent"){
         newAgent = 1;
+        printf("Agent account has been created with Number: \"%s\", Name: \"%s\", and PIN: \"%s\"",newNumber.c_str(), newName.c_str(), newPIN.c_str());
     }
     else{
         puts("Invalid account type! Must be either\"Machine\" or \"Agent\"! ");
@@ -245,5 +248,56 @@ void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the 
     }
     
     validAccounts.push_back(Account(newNumber, newName, newPIN, newAgent)); //Creates a new instance of an account using user inputs in the validAccounts vector
+
     return;
 }
+
+/**DeleteAccount is a method which deletes a user defined account from the valid accounts vector by refrence in a void function**/
+void DeleteAccount(vector<Account> &validAccounts, bool isAgent){//Accepts the enire valid accounts file by refrence and deletes the single account number the user inputs. Also accepts the 'isAgent' accessor value from currentAccount for the isAgent check
+    
+    string delNumber,delName,delPIN;
+    
+    if (isAgent == 0){ // returns to main if currentAccount is not an agent account
+        puts("Invalid session type for command!");
+        return;
+    }
+    
+    puts("Input account type:");
+    cin>>delNumber;
+    
+    if (delNumber.find_first_not_of("0123456789") == string::npos || delNumber.length() != 7 || delNumber[0] == '0') {// Makes sure delNumber is a valid account number to begin with
+        puts("Invalid Account Number: Input is not a possible account number!!");
+        return;
+    }
+    
+    
+    for (int i =0; i<validAccounts.size(); i++) { // if the account number isnt in the valid accounts vector then it has not been created yet
+        if (delNumber == validAccounts.at(i).getNum()){
+            
+            puts("Input account name:"); //When function has found the corresponding account, it then prompts for name and number
+            cin>>delName;
+            
+            if (delName != validAccounts.at(i).getName()) { //Incorrect name returns
+                puts("Incorrect name!");
+                return;
+            }
+            
+            puts("Input account PIN:");
+            cin>>delName;
+            
+            if (delPIN != validAccounts.at(i).getPIN()) { //Incorrect PIN returns
+                puts("Incorrect PIN!");
+                return;
+            }
+                
+                //If all details line up then account is deleted by refrence from the valid accounts vector
+                validAccounts.erase(remove(validAccounts.begin(), validAccounts.end(), i), validAccounts.end());
+            printf("Account \"%s\" has been deleted!", delNumber.c_str());
+                return;
+            }
+    }
+    
+    puts("Invalid Account Number: Account does not exist!"); //If delNumber was not in the valid accounts vector, function returns
+    return;
+}
+
