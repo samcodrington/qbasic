@@ -25,7 +25,7 @@ bool checkValidAccount(const Account, const string acctNum);
 bool checkValidNumber(const string number, float* num);
 bool checkLegalDepositAmount(const Account thisAcct, const float* deposit);
 bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt);
-Account getDestAcct(vector<Account &, string);
+Account* getDestAcct(vector<Account> &, string);
 
 //Constants for Transaction Limits
 #define AGENT_MAX 1000
@@ -331,14 +331,13 @@ bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt){
 /**
  * getDestAcct is a simple helper function that iterates through the validAccts parameter to see if it matches the acctNum provided. 
  * If it does it match the funciton returns that Acccount. If it doesn't it returns NULL.
- * IMPORTANT: Should only be used to define a pointer to prevent Account object being defined as NULL!! 
  * */
-Account getDestAcct(vector<Account> & validAccts, string acctNum){
+Account* getDestAcct(vector<Account> & validAccts, string acctNum){
     for (int i = 0; i < validAccts.size(); i++){
         if (validAccts.at(i).getNum() == acctNum)
-            return validAccts.at(i);
+            return &validAccts.at(i);
     }
-    else return NULL;
+    return NULL;
 }
 
 
