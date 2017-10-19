@@ -26,8 +26,8 @@ bool checkValidNumber(const string number, int* num);
 bool checkLegalDepositAmount(const Account thisAcct, const int* deposit);
 
 //Constants for Transaction Limits
-#define AGENT_MAX 1000.01
-#define ATM_MAX   1000000
+#define AGENT_MAX 1000
+#define ATM_MAX 1000000
 
 // -----Main-----
 int main(){
@@ -173,7 +173,7 @@ Account CreateAccount(Account currentAccount){
 /**CheckValidDestination is a method which returns true if the account Number is the same as the currentAccount logged on
  * or if the account is an agent. 
  * Does not check whether account exists or not!**/
-bool checkValidAccount(const Account currentAccount, const string acctNum){
+bool checkValidAccount(Account currentAccount, const string acctNum){
     // Check AcctNum exists 
         /**TODO**/
 
@@ -197,7 +197,7 @@ bool checkValidAccount(const Account currentAccount, const string acctNum){
  * **/
 bool checkValidNumber(const string input, int* num){
     try{
-        int* num = std::stoi(input);
+        *num = std::stoi(input);
         return true;
     } catch(std::invalid_argument){
         puts("Error Invalid Number! Please enter only Numbers with no Special Characters or Letters!");
@@ -207,26 +207,24 @@ bool checkValidNumber(const string input, int* num){
 }
 
 
-//This function checks various conditions for a legal deposit & if they are met returns true otherwise returns false
-bool checkLegalDepositAmount(const Account thisAcct, const int* deposit){
-    //Return false for negative deposit
-    if (deposit < 0){
+//This function checks various conditions for a legal transaction & if they are met returns true otherwise returns false
+bool checkLegalTransactionAmount(Account thisAcct, const int* transactionAmt){
+    //Return false for negative amount
+    if (*transactionAmt < 0){
         puts("Error: Cannot Deposit Negative Amount");
         return false;
     }
-    //return false if an agent is attempting to deposit over the limit
-    if (thisAcct.isAgent() && deposit >= AGENT_MAX){
+    //return false if an agent is attempting to transact amount over the limit
+    if (thisAcct.isAgent() && *transactionAmt >= AGENT_MAX){
        puts("Error! Cannot Deposit Amount equal to or over $" + AGENT_MAX);
        return false;       
     }
-    //Return false if an ATM is attempting to deposit over the ATM limit
-    if (!thisAcct.isAgent() && deposit >= ATM_MAX){
-        puts("Error! ATM Users Cannot Deposit Amount equal to or over $" + ATM_MAX);
+    //Return false if an ATM is attempting to transact amount over the ATM limit
+    if (!thisAcct.isAgent() && *transactionAmt > ATM_MAX){
+        puts("Error! ATM Users Cannot Issue Transactions greater than $" + ATM_MAX);
         return false;
     }
     return true;
-    
-
 }
 
 
