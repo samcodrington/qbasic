@@ -21,6 +21,7 @@ vector<Account> ReadAccountsFile(const string);
 Account Login(vector<Account>&);
 Account CreateAccount(Account);
 bool checkValidAccount(const Account, const string acctNum);
+bool checkValidNumber(const string number, int* num);
 
 // -----Main-----
 int main(){
@@ -57,15 +58,33 @@ int main(){
         }
         else if (buffer == "Deposit") {
             bool exit = false;
+            //Get Valid Destination Account for Deposit
             do{
-                puts("Enter the Destination Account");
+                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Deposit");
                 cin >> buffer;
                 if (buffer == "Exit"){
                     break;
                     exit = true;
                 }
             }while(checkValidAccount(currentAccount, buffer))
-            if (exit == true) break;
+            if (exit == true) break; 
+            destAccount = buffer;
+            //Get Valid Amount to Deposit
+            do{
+                //Check input is valid
+                int* deposit = 0;
+                do {
+                    puts("Enter the Amount you wish to Deposit Or Type \"Exit\" to Cancel Deposit");
+                    cin >> buffer;
+                    if (buffer == "Exit"){
+                        break;
+                        exit = true;
+                    }
+                }while(checkValidNumber(buffer, deposit))
+                //Checks amount is legal
+            }while(checkLegalAmount(deposit))
+
+
             
         }
         else if (buffer == "Withdraw") {
@@ -152,11 +171,25 @@ bool checkValidAccount(const Account currentAccount, const string acctNum){
     else{
         if (currentAccount.isAgent) return true;
         else{
-            puts("Attempting Transaction on Invalid Account Number. Please Try Again Or Type \"Exit\".")
+            puts("Attempting Transaction on Invalid Account Number. Please Try Again")
             return false;
         }
     }
         
+    
+    
+}
+/**
+ * checkValidNumber checks whether a given string can be convereted into a number and returns true or false.
+ * The num parameter is changed by reference to the converted string if successful.
+ * **/
+bool checkValidNumber(const string input, int* num){
+    try{
+        int* num = std::stoi(input);
+        return true;
+    } catch(std::invalid_argument){
+        puts("Error Invalid Number! Please enter only Numbers with no Special Characters or Letters!")
+    }
     
     
 }
