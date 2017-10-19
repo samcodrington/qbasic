@@ -25,6 +25,7 @@ bool checkValidAccount(const Account, const string acctNum);
 bool checkValidNumber(const string number, float* num);
 bool checkLegalDepositAmount(const Account thisAcct, const float* deposit);
 bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt);
+Account getDestAcct(vector<Account &, string);
 
 //Constants for Transaction Limits
 #define AGENT_MAX 1000
@@ -191,7 +192,7 @@ int main(){
             currentAccount.changeBalance(-*transfer);
             destAccount->changeBalance(*transfer);
         }
-        
+
         else if (buffer == "CheckAccountBalance") {
             bool exit = false;
             //Get Valid Destination Account for Withdrawal
@@ -325,6 +326,14 @@ bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt){
     }
     return true;
 }
+Account getDestAcct(vector<Account & validAccts, string acctNum){
+    for (int i = 0; i < validAccts.size(); i++){
+        if (validAccts.at(i).getNum() == acctNum)
+            return validAccts.at(i);
+    }
+    else return NULL;
+}
+
 
 
 /**CreateAccount is a method which creates and adds a new user defined account to the valid accounts vector by refrence in a void function**/
