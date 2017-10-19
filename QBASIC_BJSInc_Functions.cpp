@@ -54,6 +54,12 @@ float Account::getBalance(){ //Accessor for the particular "Account" class' acco
 bool Account::isAgent(){ //Accessor to see if particular "Account" has agent capabilities
     return agent;
 }
+void Account::changeBalance(float amt){
+    if (acctBalance + amt >= 0)
+        puts ("Cannot Change Balance Below 0.");
+    else
+        acctBalance += amt;
+}
 
 
 
