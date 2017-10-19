@@ -96,7 +96,7 @@ int main(){
                 //Checks amount is legal
             }while(checkLegalDepositAmount(currentAccount, deposit));
             if (exit == true) break;
-            //changeAccountBalance(currentAccount, deposit);
+            currentAccount.changeAccountBalance(deposit);
             
         }
         else if (buffer == "Withdraw") {
@@ -187,9 +187,6 @@ bool checkValidAccount(Account currentAccount, const string acctNum){
             return false;
         }
     }
-        
-    
-    
 }
 /**
  * checkValidNumber checks whether a given string can be convereted into a number and returns true or false.
@@ -202,8 +199,6 @@ bool checkValidNumber(const string input, int* num){
     } catch(std::invalid_argument){
         puts("Error Invalid Number! Please enter only Numbers with no Special Characters or Letters!");
     }
-    
-    
 }
 
 
