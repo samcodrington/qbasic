@@ -82,7 +82,7 @@ int main(){
             string destAccount = buffer;
             //Get Valid Amount to Deposit
             float* deposit = 0;
-            //These do-while loops prompt the user to enter a valid amount and then 
+            //These do-while loops prompt the user to enter a valid amount and then verify that it is a legal transaction 
             do{
                 //Check input is valid
                 
@@ -113,13 +113,13 @@ int main(){
                 }
             }while(checkValidAccount(currentAccount, buffer));
             
-            if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
+            if (exit == true) break; //if Exit was entered in the last do-while, leave the loop
             
             string destAccount = buffer;
             //Get Valid Amount to Deposit
             float* withdraw = 0;
             float* curWithdraw = 0;
-            //These do-while loops prompt the user to enter a valid amount and then 
+            //These do-while loops prompt the user to enter a valid amount and then verify that it is a legal transaction
             do{
                 //Check input is valid
                 do {
@@ -141,14 +141,63 @@ int main(){
             totalWithdrawal += *withdraw;
         }
         else if (buffer == "Transfer") {
+            bool exit = false;
+            Account* destAccount = NULL;
+            //Get Valid Destination Account for Withdrawal
+            //This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
+            do{ 
+                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Transfer");
+                cin >> buffer;
+                if (buffer == "Exit"){
+                    break;
+                    exit = true;
+                }
+            }while(checkValidAccount(currentAccount, buffer));
             
+            if (exit == true) break; //if Exit was entered in the last do-while, leave the loop
+            
+            //This dowhile loops until the user has entered a valid destination account or has exited.
+            do{ 
+                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Transfer");
+                cin >> buffer;
+                if (buffer == "Exit"){
+                    break;
+                    exit = true;
+                }
+                destAccount = getDestAcct(validAccts, buffer);
+            }while(destAccount != NULL);
+            
+            if (exit == true) break; //if Exit was entered in the last do-while, leave the loop
+            
+            //Get Valid Amount to Deposit
+            float* transfer = 0;
+            //These do-while loops prompt the user to enter a valid amount and then 
+            do{
+                //Check input is valid
+                do {
+                    puts("Enter the Amount you wish to Withdraw Or Type \"Exit\" to Cancel Transfer");
+                    cin >> buffer;
+                    if (buffer == "Exit"){
+                        break;
+                        exit = true;
+                    }
+                }while(checkValidNumber(buffer, transfer));
+                
+                if (exit == true) break;
+                //Checks amount is legal
+            }while(checkLegalTransactionAmount(currentAccount, transfer) && currentAccount.overdraftCheck(*transfer));
+            
+            if (exit == true) break;
+            currentAccount.changeBalance(-*transfer);
+            destAccount->changeBalance(*transfer);
         }
-        else if (buffer == "Checkaccountbalance") {
+        
+        else if (buffer == "CheckAccountBalance") {
             bool exit = false;
             //Get Valid Destination Account for Withdrawal
             //This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
             do{ 
-                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Withdrawal");
+                puts("Enter the Target Account Or Type \"Exit\" to Cancel Withdrawal");
                 cin >> buffer;
                 if (buffer == "Exit"){
                     break;
