@@ -23,6 +23,11 @@ void CreateAccount(vector<Account> &,bool);
 void DeleteAccount(vector<Account> &,bool);
 bool checkValidAccount(const Account, const string acctNum);
 bool checkValidNumber(const string number, int* num);
+bool checkLegalDepositAmount(const Account thisAcct, const int* deposit);
+
+//Constants for Transaction Limits
+#define AGENT_MAX 1000.01
+#define ATM_MAX   1000000
 
 // -----Main-----
 int main(){
@@ -45,6 +50,7 @@ int main(){
     Account currentAccount = Login(validAccts); //The 'Login' function validates a valid login and loads the current user account into memory
     
     while (1) {
+        int totalWithdrawal = 0;
         puts("Please Type the Action You Wish To Do");
         cin >> buffer;
         
@@ -60,20 +66,25 @@ int main(){
         else if (buffer == "Deposit") {
             bool exit = false;
             //Get Valid Destination Account for Deposit
-            do{
+            //This do-while loop will prompt the user to enter a destiniation account until a correct account is entered.
+            do{ 
                 puts("Enter the Destination Account Or Type \"Exit\" to Cancel Deposit");
                 cin >> buffer;
                 if (buffer == "Exit"){
                     break;
                     exit = true;
                 }
-            }while(checkValidAccount(currentAccount, buffer))
-            if (exit == true) break; 
-            destAccount = buffer;
+            }while(checkValidAccount(currentAccount, buffer));
+
+            if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
+            
+            string destAccount = buffer;
             //Get Valid Amount to Deposit
+            int* deposit = 0;
+            //These do-while loops prompt the user to enter a valid amount and then 
             do{
                 //Check input is valid
-                int* deposit = 0;
+                
                 do {
                     puts("Enter the Amount you wish to Deposit Or Type \"Exit\" to Cancel Deposit");
                     cin >> buffer;
@@ -81,11 +92,11 @@ int main(){
                         break;
                         exit = true;
                     }
-                }while(checkValidNumber(buffer, deposit))
+                }while(checkValidNumber(buffer, deposit));
                 //Checks amount is legal
-            }while(checkLegalAmount(deposit))
-
-
+            }while(checkLegalDepositAmount(currentAccount, deposit));
+            if (exit == true) break;
+            //changeAccountBalance(currentAccount, deposit);
             
         }
         else if (buffer == "Withdraw") {
@@ -167,12 +178,12 @@ bool checkValidAccount(const Account currentAccount, const string acctNum){
         /**TODO**/
 
     // Checks permissions    
-    if(currentAccount.getNum == acctNum) //Check if transaction being done on currently logged in Account
+    if(currentAccount.getNum() == acctNum) //Check if transaction being done on currently logged in Account
         return true; //If the account is being
     else{
-        if (currentAccount.isAgent) return true;
+        if (currentAccount.isAgent()) return true;
         else{
-            puts("Attempting Transaction on Invalid Account Number. Please Try Again")
+            puts("Attempting Transaction on Invalid Account Number. Please Try Again");
             return false;
         }
     }
@@ -189,12 +200,32 @@ bool checkValidNumber(const string input, int* num){
         int* num = std::stoi(input);
         return true;
     } catch(std::invalid_argument){
-        puts("Error Invalid Number! Please enter only Numbers with no Special Characters or Letters!")
+        puts("Error Invalid Number! Please enter only Numbers with no Special Characters or Letters!");
     }
     
     
 }
-bool parseDeposit(){
+
+
+//This function checks various conditions for a legal deposit & if they are met returns true otherwise returns false
+bool checkLegalDepositAmount(const Account thisAcct, const int* deposit){
+    //Return false for negative deposit
+    if (deposit < 0){
+        puts("Error: Cannot Deposit Negative Amount");
+        return false;
+    }
+    //return false if an agent is attempting to deposit over the limit
+    if (thisAcct.isAgent() && deposit >= AGENT_MAX){
+       puts("Error! Cannot Deposit Amount equal to or over $" + AGENT_MAX);
+       return false;       
+    }
+    //Return false if an ATM is attempting to deposit over the ATM limit
+    if (!thisAcct.isAgent() && deposit >= ATM_MAX){
+        puts("Error! ATM Users Cannot Deposit Amount equal to or over $" + ATM_MAX);
+        return false;
+    }
+    return true;
+    
 
 }
 
