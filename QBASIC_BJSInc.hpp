@@ -34,6 +34,11 @@ public:
     string getPIN();
     float getBalance();
     bool isAgent();
+
+    bool overdraftCheck(const float amt);
+    //Modifier for Account balance
+    void changeBalance(const float amt);
+
     
 private:
     //Private variables for each account detail

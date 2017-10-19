@@ -22,8 +22,9 @@ Account Login(vector<Account> &);
 void CreateAccount(vector<Account> &,bool);
 void DeleteAccount(vector<Account> &,bool);
 bool checkValidAccount(const Account, const string acctNum);
-bool checkValidNumber(const string number, int* num);
-bool checkLegalDepositAmount(const Account thisAcct, const int* deposit);
+bool checkValidNumber(const string number, float* num);
+bool checkLegalDepositAmount(const Account thisAcct, const float* deposit);
+bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt);
 
 //Constants for Transaction Limits
 #define AGENT_MAX 1000
@@ -50,7 +51,7 @@ int main(){
     Account currentAccount = Login(validAccts); //The 'Login' function validates a valid login and loads the current user account into memory
     
     while (1) {
-        int totalWithdrawal = 0;
+        float totalWithdrawal = 0;
         puts("Please Type the Action You Wish To Do");
         cin >> buffer;
         
@@ -80,7 +81,7 @@ int main(){
             
             string destAccount = buffer;
             //Get Valid Amount to Deposit
-            int* deposit = 0;
+            float* deposit = 0;
             //These do-while loops prompt the user to enter a valid amount and then 
             do{
                 //Check input is valid
@@ -94,19 +95,70 @@ int main(){
                     }
                 }while(checkValidNumber(buffer, deposit));
                 //Checks amount is legal
-            }while(checkLegalDepositAmount(currentAccount, deposit));
+            }while(checkLegalTransactionAmount(currentAccount, deposit));
             if (exit == true) break;
-            currentAccount.changeAccountBalance(deposit);
+            currentAccount.changeBalance(*deposit);
             
         }
         else if (buffer == "Withdraw") {
+            bool exit = false;
+            //Get Valid Destination Account for Withdrawal
+            //This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
+            do{ 
+                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Withdrawal");
+                cin >> buffer;
+                if (buffer == "Exit"){
+                    break;
+                    exit = true;
+                }
+            }while(checkValidAccount(currentAccount, buffer));
             
+            if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
+            
+            string destAccount = buffer;
+            //Get Valid Amount to Deposit
+            float* withdraw = 0;
+            float* curWithdraw = 0;
+            //These do-while loops prompt the user to enter a valid amount and then 
+            do{
+                //Check input is valid
+                do {
+                    puts("Enter the Amount you wish to Withdraw Or Type \"Exit\" to Cancel Withdrawal");
+                    cin >> buffer;
+                    if (buffer == "Exit"){
+                        break;
+                        exit = true;
+                    }
+                }while(checkValidNumber(buffer, withdraw));
+                
+                if (exit == true) break;
+                //Checks amount is legal
+                *curWithdraw = *withdraw + totalWithdrawal;
+            }while(checkLegalTransactionAmount(currentAccount, curWithdraw) && currentAccount.overdraftCheck(*withdraw));
+            
+            if (exit == true) break;
+            currentAccount.changeBalance(-*withdraw);
+            totalWithdrawal += *withdraw;
         }
         else if (buffer == "Transfer") {
             
         }
         else if (buffer == "Checkaccountbalance") {
+            bool exit = false;
+            //Get Valid Destination Account for Withdrawal
+            //This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
+            do{ 
+                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Withdrawal");
+                cin >> buffer;
+                if (buffer == "Exit"){
+                    break;
+                    exit = true;
+                }
+            }while(checkValidAccount(currentAccount, buffer));
             
+            if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
+            
+            string destAccount = buffer;
         }
         else {
             puts("Invalid command!");
@@ -168,6 +220,9 @@ vector<Account> ReadAccountsFile(const string filename) {
 Account CreateAccount(Account currentAccount){
 
 }
+Account Login(vector<Account> &validAccts){
+    return Account("foo","bar", "foo", true);
+}
 
 //-----------TRANSACTION FUNCTIONS ------------------/
 /**CheckValidDestination is a method which returns true if the account Number is the same as the currentAccount logged on
@@ -192,7 +247,7 @@ bool checkValidAccount(Account currentAccount, const string acctNum){
  * checkValidNumber checks whether a given string can be convereted into a number and returns true or false.
  * The num parameter is changed by reference to the converted string if successful.
  * **/
-bool checkValidNumber(const string input, int* num){
+bool checkValidNumber(const string input, float* num){
     try{
         *num = std::stoi(input);
         return true;
@@ -203,7 +258,7 @@ bool checkValidNumber(const string input, int* num){
 
 
 //This function checks various conditions for a legal transaction & if they are met returns true otherwise returns false
-bool checkLegalTransactionAmount(Account thisAcct, const int* transactionAmt){
+bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt){
     //Return false for negative amount
     if (*transactionAmt < 0){
         puts("Error: Cannot Deposit Negative Amount");
@@ -327,7 +382,6 @@ void DeleteAccount(vector<Account> &validAccounts, bool isAgent){//Accepts the e
         return;
     }
     
-    
     for (int i =0; i<validAccounts.size(); i++) { // if the account number isnt in the valid accounts vector then it has not been created yet
         if (delNumber == validAccounts.at(i).getNum()){
             
@@ -348,7 +402,7 @@ void DeleteAccount(vector<Account> &validAccounts, bool isAgent){//Accepts the e
             }
                 
                 //If all details line up then account is deleted by refrence from the valid accounts vector
-                validAccounts.erase(remove(validAccounts.begin(), validAccounts.end(), i), validAccounts.end());
+                validAccounts.erase(validAccounts.begin() + i);
             printf("Account \"%s\" has been deleted!", delNumber.c_str());
                 return;
             }
