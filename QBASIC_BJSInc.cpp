@@ -23,7 +23,6 @@ void CreateAccount(vector<Account> &,bool);
 void DeleteAccount(vector<Account> &,bool);
 bool checkValidAccount(const Account, const string acctNum);
 bool checkValidNumber(const string number, float* num);
-bool checkLegalDepositAmount(const Account thisAcct, const float* deposit);
 bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt);
 Account* getDestAcct(vector<Account> &, string);
 
@@ -275,7 +274,7 @@ Account Login(vector<Account> &validAccts){
 }
 
 //-----------TRANSACTION FUNCTIONS ------------------/
-/**CheckValidDestination is a method which returns true if the account Number is the same as the currentAccount logged on
+/**CheckValidAccount is a method which returns true if the account Number is the same as the currentAccount logged on
  * or if the account is an agent. 
  * Does not check whether account exists or not!**/
 bool checkValidAccount(Account currentAccount, const string acctNum){
