@@ -307,7 +307,9 @@ bool checkValidNumber(const string input, float* num){
 }
 
 
-//This function checks various conditions for a legal transaction & if they are met returns true otherwise returns false
+/**
+ * CheckLegalTransactionAmount checks the trasnactionAmt parameter agianst account conditions for a legal transaction
+ * If they are met the function returns true, otherwise  it returns false */
 bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt){
     //Return false for negative amount
     if (*transactionAmt < 0){
@@ -326,7 +328,12 @@ bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt){
     }
     return true;
 }
-Account getDestAcct(vector<Account & validAccts, string acctNum){
+/**
+ * getDestAcct is a simple helper function that iterates through the validAccts parameter to see if it matches the acctNum provided. 
+ * If it does it match the funciton returns that Acccount. If it doesn't it returns NULL.
+ * IMPORTANT: Should only be used to define a pointer to prevent Account object being defined as NULL!! 
+ * */
+Account getDestAcct(vector<Account> & validAccts, string acctNum){
     for (int i = 0; i < validAccts.size(); i++){
         if (validAccts.at(i).getNum() == acctNum)
             return validAccts.at(i);
