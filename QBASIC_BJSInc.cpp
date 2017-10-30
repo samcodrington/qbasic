@@ -11,14 +11,14 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "QBASIC_BJSInc_Functions.cpp"
 #include "QBASIC_BJSInc.hpp"
+#include "QBASIC_BJSInc_Functions.cpp"
 
 using namespace std;
 
 vector<Account> ReadAccountsFile(const string);
 
-Account Login(vector<Account> &);
+Account Login(vector<Account> acctvector, string accountNumber, string PIN);
 void CreateAccount(vector<Account> &,bool);
 void DeleteAccount(vector<Account> &,bool);
 bool checkValidAccount(const Account, const string acctNum);
@@ -31,191 +31,266 @@ Account* getDestAcct(vector<Account> &, string);
 #define ATM_MAX 1000000
 
 // -----Main-----
-int main(){
-    
-    //Constant string variable to quickly tell the program which account file to read from
-    //(Just in case one would need to test different versions of account files without renaming them)
+int main(int argc, char *argv[]){
+	string transactionFileName = argv[2];
+	
+	ofstream transactionFileStream;
+	transactionFileStream.open(transactionFileName);
+
     const string AccountFile = "QBASIC_AccountFile.txt";
+	vector<Account> validAccts = ReadAccountsFile(AccountFile);
+	
+    string PIN, acctNumber;
+    
+	while (true) {
+		//Constant string variable to quickly tell the program which account file to read from
+		//(Just in case one would need to test different versions of account files without renaming them)
 
-    //Loads a vector of valid accounts (of 'Account' type classes) into local memory
-    vector<Account> validAccts = ReadAccountsFile(AccountFile);
+		bool isLoggedIn = false;
     
-    //The very first function input should be 'Login' else an error message is shown to the user
-    string buffer;
-    cin >> buffer;
-    while (buffer != "Login") { //The program keeps pinging the user for an input until a 'Login'
-        puts("Must be logged in.");
-        cin >> buffer;
-    }
-    
-    Account currentAccount = Login(validAccts); //The 'Login' function validates a valid login and loads the current user account into memory
-    
-    while (1) {
-        float totalWithdrawal = 0;
-        puts("Please Type the Action You Wish To Do");
-        cin >> buffer;
-        
-        if (buffer == "Logout") {
-            break;
-        }
-        else if (buffer == "Createaccount") {
-         CreateAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account   
-        }
-        else if (buffer == "Deleteaccount") {
-            DeleteAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account
-        }
-        else if (buffer == "Deposit") {
-            bool exit = false;
-            //Get Valid Destination Account for Deposit
-            //This do-while loop will prompt the user to enter a destiniation account until a correct account is entered.
-            do{ 
-                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Deposit");
-                cin >> buffer;
-                if (buffer == "Exit"){
-                    break;
-                    exit = true;
-                }
-            }while(checkValidAccount(currentAccount, buffer));
 
-            if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
-            
-            string destAccount = buffer;
-            //Get Valid Amount to Deposit
-            float* deposit = 0;
-            //These do-while loops prompt the user to enter a valid amount and then verify that it is a legal transaction 
-            do{
-                //Check input is valid
-                
-                do {
-                    puts("Enter the Amount you wish to Deposit Or Type \"Exit\" to Cancel Deposit");
-                    cin >> buffer;
-                    if (buffer == "Exit"){
-                        break;
-                        exit = true;
-                    }
-                }while(checkValidNumber(buffer, deposit));
-                //Checks amount is legal
-            }while(checkLegalTransactionAmount(currentAccount, deposit));
-            if (exit == true) break;
-            currentAccount.changeBalance(*deposit);
-            
-        }
-        else if (buffer == "Withdraw") {
-            bool exit = false;
-            //Get Valid Destination Account for Withdrawal
-            //This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
-            do{ 
-                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Withdrawal");
-                cin >> buffer;
-                if (buffer == "Exit"){
-                    break;
-                    exit = true;
-                }
-            }while(checkValidAccount(currentAccount, buffer));
-            
-            if (exit == true) break; //if Exit was entered in the last do-while, leave the loop
-            
-            string destAccount = buffer;
-            //Get Valid Amount to Deposit
-            float* withdraw = 0;
-            float* curWithdraw = 0;
-            //These do-while loops prompt the user to enter a valid amount and then verify that it is a legal transaction
-            do{
-                //Check input is valid
-                do {
-                    puts("Enter the Amount you wish to Withdraw Or Type \"Exit\" to Cancel Withdrawal");
-                    cin >> buffer;
-                    if (buffer == "Exit"){
-                        break;
-                        exit = true;
-                    }
-                }while(checkValidNumber(buffer, withdraw));
-                
-                if (exit == true) break;
-                //Checks amount is legal
-                *curWithdraw = *withdraw + totalWithdrawal;
-            }while(checkLegalTransactionAmount(currentAccount, curWithdraw) && currentAccount.overdraftCheck(*withdraw));
-            
-            if (exit == true) break;
-            currentAccount.changeBalance(-*withdraw);
-            totalWithdrawal += *withdraw;
-        }
-        else if (buffer == "Transfer") {
-            bool exit = false;
-            Account* destAccount = NULL;
-            //Get Valid Destination Account for Withdrawal
-            //This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
-            do{ 
-                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Transfer");
-                cin >> buffer;
-                if (buffer == "Exit"){
-                    break;
-                    exit = true;
-                }
-            }while(checkValidAccount(currentAccount, buffer));
-            
-            if (exit == true) break; //if Exit was entered in the last do-while, leave the loop
-            
-            //This dowhile loops until the user has entered a valid destination account or has exited.
-            do{ 
-                puts("Enter the Destination Account Or Type \"Exit\" to Cancel Transfer");
-                cin >> buffer;
-                if (buffer == "Exit"){
-                    break;
-                    exit = true;
-                }
-                destAccount = getDestAcct(validAccts, buffer);
-            }while(destAccount != NULL);
-            
-            if (exit == true) break; //if Exit was entered in the last do-while, leave the loop
-            
-            //Get Valid Amount to Deposit
-            float* transfer = 0;
-            //These do-while loops prompt the user to enter a valid amount and then 
-            do{
-                //Check input is valid
-                do {
-                    puts("Enter the Amount you wish to Withdraw Or Type \"Exit\" to Cancel Transfer");
-                    cin >> buffer;
-                    if (buffer == "Exit"){
-                        break;
-                        exit = true;
-                    }
-                }while(checkValidNumber(buffer, transfer));
-                
-                if (exit == true) break;
-                //Checks amount is legal
-            }while(checkLegalTransactionAmount(currentAccount, transfer) && currentAccount.overdraftCheck(*transfer));
-            
-            if (exit == true) break;
-            currentAccount.changeBalance(-*transfer);
-            destAccount->changeBalance(*transfer);
-        }
+		//The very first function input should be 'Login' else an error message is shown to the user
+		string buffer;
+		puts("Type \"Login\" to log in");
+		cin >> buffer;
+		while (!isLoggedIn) {
+			while (buffer != "Login") { //The program keeps pinging the user for an input until a 'Login'
+				if (buffer == "exit") {
+					goto label;
+				}
+				puts("Must be logged in.");
+				cin >> buffer;
+			}
+			puts("machine/agent?");
+			cin >> buffer;
+			if (buffer == "machine") {
 
-        else if (buffer == "CheckAccountBalance") {
-            bool exit = false;
-            //Get Valid Destination Account for Withdrawal
-            //This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
-            do{ 
-                puts("Enter the Target Account Or Type \"Exit\" to Cancel Withdrawal");
-                cin >> buffer;
-                if (buffer == "Exit"){
-                    break;
-                    exit = true;
-                }
-            }while(checkValidAccount(currentAccount, buffer));
+				transactionFileStream << "Login\nmachine\n";
+			}
+			else {
+				/* Since we're not error checking on the first assignment, we assume the
+				only other possible input is "agent"*/
+				transactionFileStream << "Login\nagent\n";
+			}
+			puts("Account number:");
+			cin >> buffer;
+			acctNumber = buffer;
+			transactionFileStream << buffer << "\n";
+			puts("PIN");
+			cin >> buffer;
+			PIN = buffer;
+			transactionFileStream << buffer << "\n";
+
+
+			//Loads a vector of valid accounts (of 'Account' type classes) into local memory
+
             
-            if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
+
+			//The 'Login' function validates a valid login and loads the current user account into memory
+			try {
+                Account currentAccount = Login(validAccts, acctNumber, PIN);
+				isLoggedIn = true;
+				transactionFileStream << "Logged in successfully" << endl;
+			}
+			catch (TestException& e) {
+				cerr << e.what() << endl;
+				transactionFileStream << e.what() << endl;
+				isLoggedIn = false;
+			}
+
             
-            string destAccount = buffer;
-        }
-        else {
-            puts("Invalid command!");
-        }
-        
-    }
-    
-    
+		}
+        Account currentAccount = Login(validAccts, acctNumber, PIN); //scope of current account is increased
+		while (isLoggedIn) {
+			float totalWithdrawal = 0;
+			puts("Please Type the Action You Wish To Do");
+			cin >> buffer;
+
+			if (buffer == "Logout") {
+				isLoggedIn = false;
+				transactionFileStream << "Logout" << "\n";
+			}
+			else if (buffer == "Createaccount") {
+				CreateAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account   
+			}
+			else if (buffer == "Deleteaccount") {
+				DeleteAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account
+			}
+			else if (buffer == "Deposit") {
+				transactionFileStream << "Deposit" << "\n";
+				bool isFirstAttempt =true;
+				bool exit = false;
+				//Get Valid Destination Account for Deposit
+				//This do-while loop will prompt the user to enter a destiniation account until a correct account is entered.
+				do {
+					if (!isFirstAttempt)
+					puts("Enter the Destination Account Or Type \"Exit\" to Cancel Deposit");
+					cin >> buffer;
+					transactionFileStream << "Deposit Account:" << "\n";
+					transactionFileStream << buffer << "\n";
+					if (buffer == "Exit") {
+						break;
+						exit = true;
+					}
+				} while (checkValidAccount(currentAccount, buffer));
+
+				if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
+
+				string destAccount = buffer;
+				//Get Valid Amount to Deposit
+				float* deposit = 0;
+				//These do-while loops prompt the user to enter a valid amount and then verify that it is a legal transaction 
+				do {
+					//Check input is valid
+
+					do {
+						puts("Enter the Amount you wish to Deposit Or Type \"Exit\" to Cancel Deposit");
+						cin >> buffer;
+						transactionFileStream << "Deposit amount:" << "\n";
+						transactionFileStream << buffer << "\n";
+						if (buffer == "Exit") {
+							break;
+							exit = true;
+						}
+					} while (checkValidNumber(buffer, deposit));
+					//Checks amount is legal
+				} while (checkLegalTransactionAmount(currentAccount, deposit));
+				if (exit == true) break;
+				currentAccount.changeBalance(*deposit);
+
+			}
+			else if (buffer == "Withdraw") {
+				bool exit = false;
+				transactionFileStream << "Withdraw" << "\n";
+				//Get Valid Destination Account for Withdrawal
+				//This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
+				do {
+					puts("Enter the Destination Account Or Type \"Exit\" to Cancel Withdrawal");
+					cin >> buffer;
+					transactionFileStream << "Withdraw Account:" << "\n";
+					transactionFileStream << buffer << "\n";
+					if (buffer == "Exit") {
+						break;
+						exit = true;
+					}
+				} while (checkValidAccount(currentAccount, buffer));
+
+				if (exit == true) break; //if Exit was entered in the last do-while, leave the loop
+
+				string destAccount = buffer;
+				//Get Valid Amount to Deposit
+				float* withdraw = 0;
+				float* curWithdraw = 0;
+				//These do-while loops prompt the user to enter a valid amount and then verify that it is a legal transaction
+				do {
+					//Check input is valid
+					do {
+						puts("Enter the Amount you wish to Withdraw Or Type \"Exit\" to Cancel Withdrawal");
+						cin >> buffer;
+						transactionFileStream << "Withdraw amount:" << "\n";
+						transactionFileStream << buffer << "\n";
+						if (buffer == "Exit") {
+							break;
+							exit = true;
+						}
+					} while (checkValidNumber(buffer, withdraw));
+
+					if (exit == true) break;
+					//Checks amount is legal
+					*curWithdraw = *withdraw + totalWithdrawal;
+				} while (checkLegalTransactionAmount(currentAccount, curWithdraw) && currentAccount.overdraftCheck(*withdraw));
+
+				if (exit == true) break;
+				currentAccount.changeBalance(-*withdraw);
+				totalWithdrawal += *withdraw;
+			}
+			else if (buffer == "Transfer") {
+				transactionFileStream << "Transfer" << "\n";
+				bool exit = false;
+				Account* destAccount = NULL;
+				//Get Valid Destination Account for Withdrawal
+				//This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
+				do {
+					puts("Enter the Source Account Or Type \"Exit\" to Cancel Transfer");
+					transactionFileStream << "Transfer Source Account" << "\n";
+					cin >> buffer;
+					transactionFileStream << buffer << "\n";
+					if (buffer == "Exit") {
+						break;
+						exit = true;
+					}
+				} while (checkValidAccount(currentAccount, buffer));
+
+				if (exit == true) break; //if Exit was entered in the last do-while, leave the loop
+
+				//This dowhile loops until the user has entered a valid destination account or has exited.
+				do {
+					puts("Enter the Destination Account Or Type \"Exit\" to Cancel Transfer");
+					transactionFileStream << "Transfer Source Account" << "\n";
+					cin >> buffer;
+					transactionFileStream << buffer << "\n";
+					if (buffer == "Exit") {
+						break;
+						exit = true;
+					}
+					destAccount = getDestAcct(validAccts, buffer);
+				} while (destAccount != NULL);
+
+				if (exit == true) break; //if Exit was entered in the last do-while, leave the loop
+
+				//Get Valid Amount to Deposit
+				float* transfer = 0;
+				//These do-while loops prompt the user to enter a valid amount and then 
+				do {
+					//Check input is valid
+					do {
+						puts("Enter the Amount you wish to Withdraw Or Type \"Exit\" to Cancel Transfer");
+						transactionFileStream << "Transfer Amount" << "\n";
+						cin >> buffer;
+						transactionFileStream << buffer << "\n";
+						if (buffer == "Exit") {
+							break;
+							exit = true;
+						}
+					} while (checkValidNumber(buffer, transfer));
+
+					if (exit == true) break;
+					//Checks amount is legal
+				} while (checkLegalTransactionAmount(currentAccount, transfer) && currentAccount.overdraftCheck(*transfer));
+
+				if (exit == true) break;
+				currentAccount.changeBalance(-*transfer);
+				destAccount->changeBalance(*transfer);
+			}
+
+			else if (buffer == "CheckAccountBalance") {
+				transactionFileStream << "CheckAccountBalance" << "\n";
+				bool exit = false;
+				//Get Valid Destination Account for Withdrawal
+				//This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
+				do {
+					puts("Enter the Target Account Or Type \"Exit\" to Cancel Withdrawal");
+					transactionFileStream << "Checked Acount" << "\n";
+					cin >> buffer;
+					transactionFileStream << buffer << "\n";
+					if (buffer == "Exit") {
+						break;
+						exit = true;
+					}
+				} while (checkValidAccount(currentAccount, buffer));
+
+				if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
+
+				string destAccount = buffer;
+			}
+			else {
+				puts("Invalid command!");
+			}
+
+		}
+	}
+label:;
+	transactionFileStream << "EOS";
     return 0;
 }
 
@@ -266,11 +341,14 @@ vector<Account> ReadAccountsFile(const string filename) {
     return validAccounts;
 }
 
-Account CreateAccount(Account currentAccount){
+Account Login(vector<Account> acctvector, string accountNumber, string PIN) {
 
-}
-Account Login(vector<Account> &validAccts){
-    return Account("foo","bar", "foo", true);
+	for (int i = 0; i < acctvector.size(); i++) {
+		if (acctvector.at(i).getNum() == accountNumber && acctvector.at(i).getPIN() == PIN) {
+			return acctvector.at(i);
+		}
+	}
+	throw TestException("Invalid Account Credentials");
 }
 
 //-----------TRANSACTION FUNCTIONS ------------------/
@@ -303,6 +381,7 @@ bool checkValidNumber(const string input, float* num){
     } catch(std::invalid_argument){
         puts("Error Invalid Number! Please enter only Numbers with no Special Characters or Letters!");
     }
+    return false;
 }
 
 
