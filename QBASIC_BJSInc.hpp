@@ -25,6 +25,7 @@ private:
 
 class Account{
 public:
+    Account(); // Empty constructor that just creates an account with nulls
     Account(string,string,string,bool); //Constructor for the "createacct" functionality
     Account(string,string,string,float,bool); //Constructor for the initial read of the valid accounts file
     

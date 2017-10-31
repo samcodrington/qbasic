@@ -7,10 +7,9 @@
 //
 
 #include <iostream>
-#include <sstream>
-#include <fstream>
 #include <string>
 #include <vector>
+#include <cstdio>
 #include "QBASIC_BJSInc.hpp"
 #include "QBASIC_BJSInc_Functions.cpp"
 
@@ -18,12 +17,15 @@ using namespace std;
 
 vector<Account> ReadAccountsFile(const string);
 
-Account Login(vector<Account> acctvector, string accountNumber, string PIN);
+Account Login(vector<Account> acctvector);
+
 void CreateAccount(vector<Account> &,bool);
 void DeleteAccount(vector<Account> &,bool);
+
 bool checkValidAccount(const Account, const string acctNum);
 bool checkValidNumber(const string number, float* num);
 bool checkLegalTransactionAmount(Account thisAcct, const float* transactionAmt);
+
 Account* getDestAcct(vector<Account> &, string);
 
 //Constants for Transaction Limits
@@ -31,110 +33,106 @@ Account* getDestAcct(vector<Account> &, string);
 #define ATM_MAX 1000000
 
 // -----Main-----
-int main(int argc, char *argv[]){
-	string transactionFileName = argv[2];
-	
-	ofstream transactionFileStream;
-	transactionFileStream.open(transactionFileName);
-
+int main(){
     const string AccountFile = "QBASIC_AccountFile.txt";
+    
 	vector<Account> validAccts = ReadAccountsFile(AccountFile);
-	
-    string PIN, acctNumber;
+    freopen("QBASIC_LogFile.txt", "w", stderr); //Opens a log file and writes all "clog" output to it
     
 	while (true) {
-		//Constant string variable to quickly tell the program which account file to read from
-		//(Just in case one would need to test different versions of account files without renaming them)
 
-		bool isLoggedIn = false;
-    
-
-		//The very first function input should be 'Login' else an error message is shown to the user
+        bool isLoggedIn = false;
+        Account currentAccount = Account(); //Fixes scope issues by creating currentAccount var with an empty account
 		string buffer;
-		puts("Type \"Login\" to log in");
-		cin >> buffer;
-		while (!isLoggedIn) {
-			while (buffer != "Login") { //The program keeps pinging the user for an input until a 'Login'
-				if (buffer == "exit") {
-					goto label;
+        
+		while (!isLoggedIn) { //The very first function input should be 'Login' else an error message is shown to the user
+            puts("Type \"Login\" to log in; Type \"Exit\" to leave the program:");
+            clog<<"Type \"Login\" to log in; Type \"Exit\" to leave the program:"<< endl;
+            cin >> buffer;
+            
+			while (buffer != "Login") {//The program keeps pinging the user for an input until a 'Login'
+				
+                if (buffer == "Exit") {
+					goto exit; // Exit command exits the program
 				}
 				puts("Must be logged in.");
+                clog<<"Must be logged in."<<endl;
 				cin >> buffer;
 			}
-			puts("machine/agent?");
-			cin >> buffer;
-			if (buffer == "machine") {
+            isLoggedIn = true; // If "Login" command is typed into buffer, program proceeds to below try-catch block, where user actually inputs the account they want to log in as
 
-				transactionFileStream << "Login\nmachine\n";
-			}
-			else {
-				/* Since we're not error checking on the first assignment, we assume the
-				only other possible input is "agent"*/
-				transactionFileStream << "Login\nagent\n";
-			}
-			puts("Account number:");
-			cin >> buffer;
-			acctNumber = buffer;
-			transactionFileStream << buffer << "\n";
-			puts("PIN");
-			cin >> buffer;
-			PIN = buffer;
-			transactionFileStream << buffer << "\n";
-
-
-			//Loads a vector of valid accounts (of 'Account' type classes) into local memory
-
-            
-
-			//The 'Login' function validates a valid login and loads the current user account into memory
-			try {
-                Account currentAccount = Login(validAccts, acctNumber, PIN);
-				isLoggedIn = true;
-				transactionFileStream << "Logged in successfully" << endl;
-			}
-			catch (TestException& e) {
-				cerr << e.what() << endl;
-				transactionFileStream << e.what() << endl;
-				isLoggedIn = false;
-			}
-
-            
 		}
-        Account currentAccount = Login(validAccts, acctNumber, PIN); //scope of current account is increased
+        
+        
+        try {// if the user sucessfully logs in, then they can enter the second while loop where they can perform the rest of the functionality
+            Account currentAccount = Login(validAccts);
+            puts("Login success!");
+            clog << "Login success!" << endl;
+            isLoggedIn = true;
+        }
+        catch (TestException& e) { // if user fails to sucessfully login i.e. with invalid PIN or acct number, they will not be logged in, and return to the previous while loop that prompts the user for a "Login command"
+            cout << e.what() << endl;
+            clog << e.what() << endl;
+            isLoggedIn = false;
+        }
+        
+        
 		while (isLoggedIn) {
+            
 			float totalWithdrawal = 0;
-			puts("Please Type the Action You Wish To Do");
+			cout<<"Please Type the Action You Wish To Do"<<endl;
+            clog<<"Please Type the Action You Wish To Do"<<endl;
 			cin >> buffer;
 
-			if (buffer == "Logout") {
+            if (buffer == "Login") {
+                puts("User already logged in!");
+                clog<< "User already logged in!"<<endl;
+            }
+			else if (buffer == "Logout") {
 				isLoggedIn = false;
-				transactionFileStream << "Logout" << "\n";
+				puts("Logout");
+                clog << "Logout" << endl;
 			}
+            else if (buffer == "Exit") {
+                goto exit;
+            }
 			else if (buffer == "Createaccount") {
-				CreateAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account   
+                try {
+                    CreateAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account
+                } catch (TestException& e) {
+                    cout << e.what() << endl;
+                    clog << e.what() << endl;
+                }
+               
 			}
 			else if (buffer == "Deleteaccount") {
-				DeleteAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account
+                try {
+                    DeleteAccount(validAccts, currentAccount.isAgent()); //pass vector of valid accounts by refrence and if the current account is an agent account
+                } catch (TestException& e) {
+                    cout << e.what() << endl;
+                    clog << e.what() << endl;
+                }
+                
 			}
 			else if (buffer == "Deposit") {
-				transactionFileStream << "Deposit" << "\n";
+            
+			
 				bool isFirstAttempt =true;
 				bool exit = false;
 				//Get Valid Destination Account for Deposit
 				//This do-while loop will prompt the user to enter a destiniation account until a correct account is entered.
-				do {
+				
+             while (checkValidAccount(currentAccount, buffer)){
 					if (!isFirstAttempt)
 					puts("Enter the Destination Account Or Type \"Exit\" to Cancel Deposit");
 					cin >> buffer;
-					transactionFileStream << "Deposit Account:" << "\n";
-					transactionFileStream << buffer << "\n";
 					if (buffer == "Exit") {
 						break;
 						exit = true;
 					}
-				} while (checkValidAccount(currentAccount, buffer));
+				}
 
-				if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
+				if (exit == true) {break;} //if Exit was entered in the last do-while, leave the deposit loop
 
 				string destAccount = buffer;
 				//Get Valid Amount to Deposit
@@ -146,8 +144,7 @@ int main(int argc, char *argv[]){
 					do {
 						puts("Enter the Amount you wish to Deposit Or Type \"Exit\" to Cancel Deposit");
 						cin >> buffer;
-						transactionFileStream << "Deposit amount:" << "\n";
-						transactionFileStream << buffer << "\n";
+            
 						if (buffer == "Exit") {
 							break;
 							exit = true;
@@ -157,10 +154,9 @@ int main(int argc, char *argv[]){
 				} while (checkLegalTransactionAmount(currentAccount, deposit));
 				if (exit == true) break;
 				currentAccount.changeBalance(*deposit);
-
-			}
+            }
 			else if (buffer == "Withdraw") {
-				bool exit = false;
+				/*bool exit = false;
 				transactionFileStream << "Withdraw" << "\n";
 				//Get Valid Destination Account for Withdrawal
 				//This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
@@ -202,10 +198,10 @@ int main(int argc, char *argv[]){
 
 				if (exit == true) break;
 				currentAccount.changeBalance(-*withdraw);
-				totalWithdrawal += *withdraw;
-			}
+				totalWithdrawal += *withdraw;*/
+            }
 			else if (buffer == "Transfer") {
-				transactionFileStream << "Transfer" << "\n";
+				/*transactionFileStream << "Transfer" << "\n";
 				bool exit = false;
 				Account* destAccount = NULL;
 				//Get Valid Destination Account for Withdrawal
@@ -260,11 +256,11 @@ int main(int argc, char *argv[]){
 
 				if (exit == true) break;
 				currentAccount.changeBalance(-*transfer);
-				destAccount->changeBalance(*transfer);
-			}
-
+				destAccount->changeBalance(*transfer);*/
+            }
+                
 			else if (buffer == "CheckAccountBalance") {
-				transactionFileStream << "CheckAccountBalance" << "\n";
+				/*transactionFileStream << "CheckAccountBalance" << "\n";
 				bool exit = false;
 				//Get Valid Destination Account for Withdrawal
 				//This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
@@ -281,16 +277,16 @@ int main(int argc, char *argv[]){
 
 				if (exit == true) break; //if Exit was entered in the last do-while, leave the deposit loop
 
-				string destAccount = buffer;
+				string destAccount = buffer;*/
 			}
 			else {
 				puts("Invalid command!");
+                clog<<"Invalid command!"<<endl;
 			}
 
 		}
 	}
-label:;
-	transactionFileStream << "EOS";
+    exit: //if user types Exit, the goto function leads back to here
     return 0;
 }
 
@@ -313,7 +309,6 @@ vector<Account> ReadAccountsFile(const string filename) {
     if (fileIn.fail()) {
         return validAccounts;
     }
-    
     
     //This while loop iterates once per line for all of the lines in the Accounts file.
     // Pushes back each relevant value into a vector (Assumes space separation of fields)
@@ -341,17 +336,51 @@ vector<Account> ReadAccountsFile(const string filename) {
     return validAccounts;
 }
 
-Account Login(vector<Account> acctvector, string accountNumber, string PIN) {
+//-----------TRANSACTION FUNCTIONS ------------------/
 
+Account Login(vector<Account> acctvector) {
+    string buffer, acctNumber, PIN;
+    bool loginType;
+    cin >> buffer;
+    
+    puts("Please input login session type:");
+    clog<<"Please input login session type:"<<endl;
+    
+    if (buffer == "Machine") {
+        loginType = 0;
+    } else if (buffer == "Agent") {
+        loginType = 1;
+    }
+    else{
+        throw TestException("Invalid Session Type");
+    }
+    puts("Please input login account:");
+    clog<<"Please input login account:"<<endl;
+    cin >> buffer;
+    acctNumber = buffer;
+    
+    puts("Please input PIN:");
+    clog<<"Please input PIN:"<<endl;
+    cin >> buffer;
+    PIN = buffer;
+    
 	for (int i = 0; i < acctvector.size(); i++) {
-		if (acctvector.at(i).getNum() == accountNumber && acctvector.at(i).getPIN() == PIN) {
-			return acctvector.at(i);
-		}
+        if (acctvector.at(i).getNum() == acctNumber){
+            if(acctvector.at(i).getPIN() == PIN) {
+                if (acctvector.at(i).isAgent() == loginType || acctvector.at(i).isAgent() == 0) {
+                    return acctvector.at(i);
+                } else{
+                    throw TestException("Invalid Agent account number");
+                }
+            } else{
+                throw TestException("Invalid PIN");
+            }
+        }
 	}
-	throw TestException("Invalid Account Credentials");
+	throw TestException("Invalid account number");
 }
 
-//-----------TRANSACTION FUNCTIONS ------------------/
+
 /**CheckValidAccount is a method which returns true if the account Number is the same as the currentAccount logged on
  * or if the account is an agent. 
  * Does not check whether account exists or not!**/
@@ -417,88 +446,85 @@ Account* getDestAcct(vector<Account> & validAccts, string acctNum){
     }
     return NULL;
 }
-
-
-
+// ---------------
+            
+            
 /**CreateAccount is a method which creates and adds a new user defined account to the valid accounts vector by refrence in a void function**/
 void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the enire valid accounts file by refrence so it can easily add another account onto the end. Also accepts the 'isAgent' accessor value from currentAccount for the isAgent check
     string newNumber, newName, newPIN, buffer;
     bool newAgent;
     
     if (isAgent == 0){ // returns to main if currentAccount is not an agent account
-        puts("Invalid session type for command!");
-        return;
+        throw TestException("Invalid session type for command!");
     }
     puts("Input Account Number:");
+    clog<<"Input Account Number:"<<endl;
     cin>>newNumber;
     
     if (newNumber.find_first_not_of("0123456789") == string::npos) {// Makes sure newNumber is only numerical
-        puts("Invalid Account Number: New account number can only have numbers!");
-        return;
+        throw TestException("Invalid Account Number: New account number can only have numbers!");
     }
     
     if (newNumber[0] == '0') {// Makes sure first digit of account number isnt 0
-        puts("Invalid Account Number: New account number cannot start with 0!");
-        return;
+        throw TestException("Invalid Account Number: New account number cannot start with 0!");
     }
     
     if (newNumber.length() != 7) {// Makes sure account number is exactly 7 digits long
-        puts("Invalid Account Number: New account number must be exactly 7 digits long!");
-        return;
+        throw TestException("Invalid Account Number: New account number must be exactly 7 digits long!");
     }
     
     for (int i =0; i<validAccounts.size(); i++) { // Makes sure that the new account number does not already exist
         if (newNumber == validAccounts.at(i).getNum()){
-            puts("Invalid Account Number: New account number already exists!");
-            return;
+            throw TestException("Invalid Account Number: New account number already exists!");
         }
     }
     
     puts("Input Account Name:");
+    clog<<"Input Account Name:"<<endl;
     cin>>newName;
     
     if (newName.find_first_not_of("0123456789 abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") == string::npos) {// Makes sure newName is only numerical, alphabetical (Spaces allowed)
-        puts("Invalid Account Name: Only input letters numbers and spaces!");
-        return;
+        throw TestException("Invalid Account Name: Only input letters numbers and spaces!");
     }
     
     if (newName[0] == ' ') {// Makes sure first digit of account name isnt a space
-        puts("Invalid Account Name: Space not allowed at beginning of name!");
-        return;
+        throw TestException("Invalid Account Name: Space not allowed at beginning of name!");
     }
     
     if (newName.length() < 3 || newName.length() > 20) {// Makes sure name is between 3-20 chars
-        puts("Invalid Account Name: Space not allowed at beginning of name!");
-        return;
+       throw TestException("Invalid Account Name: Space not allowed at beginning of name!");
     }
     
     puts("Input account PIN:");
+    clog<<"Input account PIN:"<<endl;
     cin>>newPIN;
     
     if (newNumber.find_first_not_of("0123456789") == string::npos) {// Makes sure PIN is only numerical
-        puts("Invalid Account PIN: New PIN can only have numbers!");
-        return;
+        throw TestException("Invalid Account PIN: New PIN can only have numbers!");
     }
     
     if (newPIN.length() != 4) {// Makes sure PIN is 4 numbers long
-        puts("Invalid Account PIN: PIN must be 4 digits long!");
-        return;
+        throw TestException("Invalid Account PIN: PIN must be 4 digits long!");
     }
     
     
     puts("Input account type:"); //Last input to the function asks for accout type
+    clog<<"Input account type:"<<endl;
     cin>>buffer; // If not agent or machine, the program returns to the beginning
+    
     if (buffer =="Machine") {
         newAgent = 0;
         printf("User account has been created with Number: \"%s\", Name: \"%s\", and PIN: \"%s\"",newNumber.c_str(), newName.c_str(), newPIN.c_str());
+         clog<<"Machine account has been created with Number: \""<<newNumber.c_str()<<"\", Name: \""<<newName.c_str()<<"\", and PIN: \""<<newPIN.c_str()<<"\""<<endl;
+        
     }
     else if (buffer == "Agent"){
         newAgent = 1;
         printf("Agent account has been created with Number: \"%s\", Name: \"%s\", and PIN: \"%s\"",newNumber.c_str(), newName.c_str(), newPIN.c_str());
+        clog<<"Agent account has been created with Number: \""<<newNumber.c_str()<<"\", Name: \""<<newName.c_str()<<"\", and PIN: \""<<newPIN.c_str()<<"\""<<endl;
     }
     else{
-        puts("Invalid account type! Must be either\"Machine\" or \"Agent\"! ");
-        return;
+        throw TestException("Invalid account type! Must be either\"Machine\" or \"Agent\"! ");
     }
     
     validAccounts.push_back(Account(newNumber, newName, newPIN, newAgent)); //Creates a new instance of an account using user inputs in the validAccounts vector
@@ -512,35 +538,34 @@ void DeleteAccount(vector<Account> &validAccounts, bool isAgent){//Accepts the e
     string delNumber,delName,delPIN;
     
     if (isAgent == 0){ // returns to main if currentAccount is not an agent account
-        puts("Invalid session type for command!");
-        return;
+        throw TestException("Invalid session type for command!");
     }
     
     puts("Input account type:");
+    clog<<"Input account type:"<<endl;
     cin>>delNumber;
     
     if (delNumber.find_first_not_of("0123456789") == string::npos || delNumber.length() != 7 || delNumber[0] == '0') {// Makes sure delNumber is a valid account number to begin with
-        puts("Invalid Account Number: Input is not a possible account number!!");
-        return;
+        throw TestException("Invalid Account Number: Input is not a possible account number!!");
     }
     
     for (int i =0; i<validAccounts.size(); i++) { // if the account number isnt in the valid accounts vector then it has not been created yet
         if (delNumber == validAccounts.at(i).getNum()){
             
             puts("Input account name:"); //When function has found the corresponding account, it then prompts for name and number
+            clog<<"Input account name:"<<endl;
             cin>>delName;
             
             if (delName != validAccounts.at(i).getName()) { //Incorrect name returns
-                puts("Incorrect name!");
-                return;
+                throw TestException("Incorrect name!");
             }
             
             puts("Input account PIN:");
+            clog<<"Input account PIN:"<<endl;
             cin>>delName;
             
             if (delPIN != validAccounts.at(i).getPIN()) { //Incorrect PIN returns
-                puts("Incorrect PIN!");
-                return;
+                throw TestException("Incorrect PIN!");
             }
                 
                 //If all details line up then account is deleted by refrence from the valid accounts vector
@@ -550,7 +575,6 @@ void DeleteAccount(vector<Account> &validAccounts, bool isAgent){//Accepts the e
             }
     }
     
-    puts("Invalid Account Number: Account does not exist!"); //If delNumber was not in the valid accounts vector, function returns
-    return;
+    throw TestException("Invalid Account Number: Account does not exist!"); //If delNumber was not in the valid accounts vector, function returns
 }
 

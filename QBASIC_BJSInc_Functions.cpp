@@ -21,11 +21,16 @@ string& TestException::what() { return message; }
 
 //Constructors
 
+Account::Account(): accountNumber(""), accountName(""), accountPin(""), accountBalance(0),agent(0)
+{
+    //Blank constructor to make an empty account
+}
+
 //First Account class consructor to be used for the CreateAcct function
 Account::Account(string acctNum, string acctName, string acctPin, bool isAgent):
 accountNumber(acctNum), accountName(acctName), accountPin(acctPin), accountBalance(0),agent(isAgent)
 {
-    //PUT CREATEACCOUNT TESTS IN HERE
+    //CreateAccount function checks if account is valid already
 }
 
 //First Account class consructor to be used for the ReadAccountsFile function
