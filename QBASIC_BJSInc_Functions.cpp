@@ -34,9 +34,10 @@ accountNumber(acctNum), accountName(acctName), accountPin(acctPin), accountBalan
 }
 
 //First Account class consructor to be used for the ReadAccountsFile function
-Account::Account(string acctNum, string acctName, string acctPin, float acctBalance, bool isAgent):
+Account::Account(string acctNum, string acctName, string acctPin, int acctBalance, bool isAgent):
 accountNumber(acctNum), accountName(acctName), accountPin(acctPin), accountBalance(acctBalance),agent(isAgent)
 {
+    accountBalance = accountBalance/100; //When the program reads the valid accounts file (which has balance in cents; i.e. $1.23 in the program is 123 in accounts file) it needs to divide balance value by 100 to get real dollars and cents
     //No checks needed since valid accounts file is assumed to already be checked
 }
 
@@ -60,9 +61,6 @@ bool Account::isAgent(){ //Accessor to see if particular "Account" has agent cap
     return agent;
 }
 void Account::changeBalance(const float amt){
-    if (accountBalance + amt >= 0)
-        puts ("Cannot Change Balance Below 0.");
-    else
         accountBalance += amt;
 }
 bool Account::overdraftCheck(const float amt){
