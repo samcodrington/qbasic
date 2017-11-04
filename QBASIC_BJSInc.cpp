@@ -24,6 +24,8 @@ void CreateAccount(vector<Account> &,bool);
 void DeleteAccount(vector<Account> &,bool);
 void Deposit(vector<Account> &, Account &);
 void Withdraw(vector<Account> &, Account &, float &);
+void Transfer(vector<Account> &, Account &);
+void CheckAccountBalance(vector<Account> &, Account &);
 
 void checkLegalTransactionAmount(Account &, float);
 Account* getDestAcct(vector<Account> &, string);
@@ -139,63 +141,23 @@ int main(){
                 }
             }
 			else if (buffer == "Transfer") {
-			/*	Account* destAccount = NULL;
-				//Get Valid Destination Account for Withdrawal
-				//This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
-				do{
-                    puts("Enter the Source Account:");
-					cin >> buffer;
-
-					if (buffer == "Exit") {
+                try {
+                    Transfer(validAccts, currentAccount); //pass vector of valid accounts by refrence and if the current account is an agent account
+                } catch (TestException& e) {
+                    if (e.what() == "Exit")
                         goto exit;
-					}
-                } while (checkValidAccount(currentAccount, buffer));
-
-				//This dowhile loops until the user has entered a valid destination account or has exited.
-				do {
-                    puts("Enter the Destination Account:");
-					cin >> buffer;
-					if (buffer == "Exit") {
+                    cout << e.what() << endl;
+                }
+            }
+			else if (buffer == "Checkaccountbalance") {
+                try {
+                    CheckAccountBalance(validAccts, currentAccount); //pass vector of valid accounts by refrence and if the current account is an agent account
+                } catch (TestException& e) {
+                    if (e.what() == "Exit")
                         goto exit;
-					}
-					destAccount = getDestAcct(validAccts, buffer);
-				} while (destAccount != NULL);
-
-				//Get Valid Amount to Deposit
-				float* transfer = 0;
-				//These do-while loops prompt the user to enter a valid amount and then 
-				do {
-					//Check input is valid
-					do {
-						puts("Enter the Amount you wish to Withdraw Or Type \"Exit\" to Cancel Transfer");
-						cin >> buffer;
-
-						if (buffer == "Exit") {
-                            goto exit;
-						}
-					} while (checkValidNumber(buffer, transfer));
-                    
-					//Checks amount is legal
-				} while (checkLegalTransactionAmount(currentAccount, transfer) && currentAccount.overdraftCheck(*transfer));
-
-				currentAccount.changeBalance(-*transfer);
-				destAccount->changeBalance(*transfer);
-
-                clog<<"XFR "<<currentAccount.getNum()<<" "<<&transfer<<endl;
-            */}
-                
-			else if (buffer == "CheckAccountBalance") {
-				/*//Get Valid Destination Account for Withdrawal
-				//This do-while loop will prompt the user to enter a withdrawal account until a correct account is entered.
-				do {
-                    puts("Enter the Target Account:");
-					cin >> buffer;
-					if (buffer == "Exit") {
-                        goto exit;
-					}
-				} while (checkValidAccount(currentAccount, buffer));
-				string destAccount = buffer;
-			*/}
+                    cout << e.what() << endl;
+                }
+            }
 			else {
 				puts("Invalid command!");
 			}
@@ -485,7 +447,7 @@ void Deposit(vector<Account> &validAccounts,Account &currentAccount){
         throw TestException("Invalid account: User cannot deposit to other accounts!");
     }
     
-    puts("Enter the Amount you wish to Deposit:");
+    puts("Enter the amount you wish to deposit:");
     cin>>buffer;
     if (buffer == "Exit")
         throw TestException("Exit");
@@ -516,7 +478,7 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
         throw TestException("Invalid account: User cannot deposit to other accounts!");
     }
     
-    puts("Enter the Amount you wish to withdraw:");
+    puts("Enter the amount you wish to withdraw:");
     cin>>buffer;
     if (buffer == "Exit")
         throw TestException("Exit");
@@ -543,7 +505,64 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
     
 }
 
+void Transfer(vector<Account> &validAccounts, Account &currentAccount){
+    string fromAccount, toAccount, buffer;
+    float amount;
+    
+    puts("Enter account to transfer from:");
+    cin>>fromAccount;
+    
+    if (fromAccount == "Exit")
+        throw TestException("Exit");
+    
+    if(!currentAccount.isAgent() && currentAccount.getNum() != getDestAcct(validAccounts, fromAccount)->getNum()){
+        throw TestException("Invalid account: User cannot transfer from account that is not thier own!");
+    }
+    
+    puts("Enter account to transfer from:");
+    cin>>toAccount;
+    
+    if (toAccount == "Exit")
+        throw TestException("Exit");
+    
+    puts("Enter the amount you wish to transfer:");
+    cin>>buffer;
+    if (buffer == "Exit")
+        throw TestException("Exit");
+    
+    if (buffer.find_first_not_of("0123456789") != string::npos) {// Makes sure amount is only numerical
+        throw TestException("Invalid Amount: Amount can only have numbers!");
+    }
+    amount = stof(buffer);
+    checkLegalTransactionAmount(currentAccount, amount);
+    
+    if (getDestAcct(validAccounts, fromAccount)->overdraftCheck(amount*-1)) {
+        throw TestException("Invalid Amount: Transfer would result in an overdraft!");
+    }
+    
+    getDestAcct(validAccounts, fromAccount)->changeBalance(amount*-1);
+    getDestAcct(validAccounts, toAccount)->changeBalance(amount);
+    
+    clog<<"XFR "<<getDestAcct(validAccounts, fromAccount)->getNum()<<" "<< amount*100<<" "<<getDestAcct(validAccounts, toAccount)->getNum()<<" "<<getDestAcct(validAccounts, fromAccount)->getName()<<endl;
+    
+    
+}
 
+void CheckAccountBalance(vector<Account> &validAccounts, Account &currentAccount){
+    string destAccount;
+    
+    puts("Enter the account to check balance of:");
+    cin>>destAccount;
+    
+    if (destAccount == "Exit")
+        throw TestException("Exit");
+    
+    if(!currentAccount.isAgent() && currentAccount.getNum() != getDestAcct(validAccounts, destAccount)->getNum()){
+        throw TestException("Invalid account: User cannot check balance from account that is not thier own!");
+    }
+    
+    cout<<"Balacnce in account "<<getDestAcct(validAccounts, destAccount)->getNum()<<" is $"<<getDestAcct(validAccounts, destAccount)->getBalance()<<endl;
+}
 /**
  * CheckLegalTransactionAmount checks the trasnactionAmt parameter agianst account conditions for a legal transaction
  * If they are met the function returns true, otherwise  it returns false */
@@ -562,6 +581,7 @@ void checkLegalTransactionAmount(Account &thisAcct, const float transactionAmt){
         throw TestException("Invalid transaction amount: Machine Users Cannot Issue Transactions greater than 1000!");
     }
 }
+
 /**
  * getDestAcct is a simple helper function that iterates through the validAccts parameter to see if it matches the acctNum provided. 
  * If it does it match the funciton returns that Acccount. If it doesn't it returns NULL.
