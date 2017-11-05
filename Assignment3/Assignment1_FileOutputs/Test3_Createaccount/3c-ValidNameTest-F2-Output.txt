@@ -1,0 +1,6 @@
+Please input login account:
+Please Input PIN:
+Agent Login success!
+Input Account Number:
+Invalid Account Name: 
+Invalid Account Name: Space not allowed at beginning of name!

@@ -1,0 +1,5 @@
+Please input login account:
+Please Input PIN:
+Machine Login success!
+Input account number to be checked:
+Invalid Privleges!

@@ -1,0 +1,12 @@
+Atm
+1234567 //valid account number
+1234 //valid PIN for that accountnumber
+Transfer
+1234567
+1234568 //destination acct no.
+Two Hundred Dollars //amount to be deposited
+Transfer
+1234567
+1234568
+$200.000
+Logout

@@ -1,0 +1,2 @@
+Account Balance of Acct # 1234568 Equals 600!
+Error! Overdraft attempted: Transfer of ‘500’ from ATM Account ‘1234567’ worth ‘300’ is not allowed!

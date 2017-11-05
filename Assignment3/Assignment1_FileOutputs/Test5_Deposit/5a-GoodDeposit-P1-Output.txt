@@ -1,0 +1,10 @@
+Login
+Atm
+1234567 //valid account number
+1234 //valid PIN for that accountnumber
+Deposit
+1234567 //destination acct no.
+1000 //amount to be deposited
+CheckAccountBalance 
+1234567
+Logout 

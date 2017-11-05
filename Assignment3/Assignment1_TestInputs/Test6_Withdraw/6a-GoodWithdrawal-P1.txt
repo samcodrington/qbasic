@@ -1,0 +1,12 @@
+Login
+Atm
+1234567 //valid account number
+1234 //valid PIN for that accountnumber
+CheckAccountBalance 
+1234567
+Withdraw
+1234567
+300 //amount to be withdrawn
+CheckAccountBalance
+1234567
+Logout 

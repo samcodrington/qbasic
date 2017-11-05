@@ -1,0 +1,9 @@
+Login
+ATM
+1234567
+1234
+Transfer
+1234567
+123468
+3000
+Logout

@@ -1,0 +1,7 @@
+Please input login account:
+Please Input PIN:
+Agent Login success!
+Input account number to be deleted:
+Input account name: 
+Input account PIN: 
+Account 1234567 has been deleted!

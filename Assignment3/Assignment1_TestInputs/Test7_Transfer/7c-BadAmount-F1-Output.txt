@@ -1,0 +1,2 @@
+Error! BadInput for Transfer of ‘Two Hundred Dollars’
+Error! BadInput for Transfer of ‘$200.00’

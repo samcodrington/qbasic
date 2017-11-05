@@ -1,0 +1,1 @@
+Error! SameAccount: Attempted to Transfer “300” to Account “1234567” from same account

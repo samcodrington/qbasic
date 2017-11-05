@@ -1,0 +1,17 @@
+Login
+Agent
+1000000 //valid account number
+1234 //valid PIN for that accountnumber
+CheckAccountBalance 
+1000000
+CheckAccountBalance
+1234567
+Transfer
+1000000
+1234567
+3000 //amount to be transfered
+CheckAccountBalance 
+1000000
+CheckAccountBalance
+1234567
+Logout 

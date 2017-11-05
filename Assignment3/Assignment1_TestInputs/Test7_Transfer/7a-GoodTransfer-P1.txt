@@ -1,0 +1,17 @@
+Login
+Atm
+1234567 //valid account number
+1234 //valid PIN for that accountnumber
+CheckAccountBalance 
+1234567
+CheckAccountBalance
+1234568
+Transfer
+1234567
+1234568
+300 //amount to be transfered
+CheckAccountBalance
+1234567
+CheckAccountBalance
+1234568
+Logout 

@@ -1,0 +1,7 @@
+Login
+Agent
+1000000
+1000
+Createaccount
+12345678
+logout

@@ -1,0 +1,9 @@
+Login
+ATM
+1234567
+1234 //valid PIN
+Transfer
+1234567
+1234568
+-30
+Logout

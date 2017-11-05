@@ -1,0 +1,7 @@
+Please input login account:
+Please Input PIN:
+Agent Login success!
+Input Account Number:
+Invalid Account Name: 
+Invalid Account Name:Name must be between 3-20 characters long!
+	

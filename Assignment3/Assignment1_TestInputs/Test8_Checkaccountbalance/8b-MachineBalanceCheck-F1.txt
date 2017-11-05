@@ -1,0 +1,7 @@
+Login
+Machine
+1234567
+1234
+CheckaccountBalance
+1000000
+logout

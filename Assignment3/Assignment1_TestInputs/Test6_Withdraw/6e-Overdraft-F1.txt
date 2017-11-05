@@ -1,0 +1,10 @@
+Login
+ATM
+1234567
+1234 // valid PIN for acct
+CheckAcctBalance
+1234567 //Account balance is 300
+Withdraw
+1234567
+500
+Logout

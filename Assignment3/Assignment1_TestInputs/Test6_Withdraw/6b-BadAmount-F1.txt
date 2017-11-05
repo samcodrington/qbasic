@@ -1,0 +1,11 @@
+Atm
+1234567 //valid account number
+1234 //valid PIN for that accountnumber
+Withdraw
+1234567 //destination acct no.
+Two Hundred Dollars //amount to be deposited
+Withdraw
+1234567
+$200.000
+Logout
+

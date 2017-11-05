@@ -1,0 +1,13 @@
+Please input login account:
+Please Input PIN:
+Agent Login success!
+Input Account Number:
+Invalid Account Name: 
+Input account PIN:
+Input account type:
+User account has been created with Number: “4234567”, Name: “Billy”, and PIN: “1234”
+Please input login account:
+Please Input PIN:
+Agent Login success!
+Deposit Success!
+Account Balance of Acct # 1234568 Equals 200!

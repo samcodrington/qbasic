@@ -1,0 +1,4 @@
+Please input login account:
+Please Input PIN:
+Agent Login success!
+Invalid Account to deposit to!
