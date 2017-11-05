@@ -94,7 +94,7 @@ int main(){
             }
 			else if (buffer == "Logout") {
 				isLoggedIn = false;
-                clog<<"EOS 0000000 0000 **** 00000000"<<endl;
+                clog<<"EOS 0000000 0000 00000000 ****"<<endl;
                 fclose(stderr);
 				puts("Logged out");
 			}
@@ -169,7 +169,7 @@ int main(){
     writeNewAccountsFile(SummaryFile, validAccts);
     
     freopen("QBASIC_MergedTransactionSummaryFile.txt", "a+", stderr); //appends EOS to merged transaction summary log file
-    clog<<"EOS 0000000 0000 **** 00000000"<<endl;
+    clog<<"EOS 0000000 0000 00000000 ****"<<endl;
     fclose(stderr);
     
     return 0;
