@@ -1,7 +1,9 @@
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
 Please input login account:
-Please Input PIN:
-Agent Login success!
-Input Account Number:
-Invalid Account Name: 
+Please input PIN:
+Login success!
+Welcome, Admin! Logged in as account 1000000
+Input Account Name:
 Input account PIN:
-Invalid Account PIN: PIN must be only numbers!
+Invalid Account PIN: New PIN can only have numbers!

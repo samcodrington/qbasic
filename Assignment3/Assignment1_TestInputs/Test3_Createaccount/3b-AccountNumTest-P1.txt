@@ -4,4 +4,4 @@ Agent
 1000
 Createaccount
 2234567 //unique account number
-logout
+Exit

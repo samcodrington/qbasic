@@ -5,4 +5,4 @@ Agent
 Createaccount
 2234567
 Billy*$_@
-logout
+Exit

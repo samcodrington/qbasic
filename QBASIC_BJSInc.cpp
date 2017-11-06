@@ -340,7 +340,7 @@ void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the 
     }
     
     if (newName.length() < 3 || newName.length() > 20) {// Makes sure name is between 3-20 chars
-        throw TestException("Invalid Account Name: Space not allowed at beginning of name!");
+        throw TestException("Invalid Account Name: Must be 3-20 characters long!");
     }
     
     puts("Input account PIN:");

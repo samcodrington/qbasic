@@ -4,4 +4,4 @@ Agent
 1000
 Createaccount
 LLLLLLL
-logout
+Exit

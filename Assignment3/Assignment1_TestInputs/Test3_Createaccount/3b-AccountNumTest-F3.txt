@@ -4,4 +4,4 @@ Agent
 1000
 Createaccount
 12345678
-logout
+Exit

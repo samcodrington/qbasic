@@ -1,8 +1,0 @@
-Please input login account:
-Please Input PIN:
-Agent Login success!
-Input Account Number:
-Invalid Account Name: 
-Input account PIN:
-Input account type:
-Invalid Account Type: Must be either “Machine” or “Agent”!
