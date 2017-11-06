@@ -1,11 +1,11 @@
 Login
 Atm
-1234567 //valid account number
-1234 //valid PIN for that accountnumber
-Deposit
-1234567 //destination acct no.
-Two Hundred Dollars //amount to be deposited
+1234567
+1234
 Deposit
 1234567
-$200.000
-Logout
+Two Hundred Dollars
+Deposit
+1234567
+$200.00
+Exit

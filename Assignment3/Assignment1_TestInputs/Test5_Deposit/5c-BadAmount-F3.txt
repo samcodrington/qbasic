@@ -5,4 +5,4 @@ ATM
 Deposit
 1234567
 3000
-Logout
+Exit

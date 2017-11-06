@@ -1,10 +1,10 @@
 Login
 Agent
-1000000 //valid agent account number
-1234 //valid PIN for that accountnumber
+1000000 
+1234
 Deposit
-1000000 //destination acct no.
-3000 //amount to be deposited
+1000000
+3000
 CheckAccountBalance 
 1000000
-Logout 
+Exit 
