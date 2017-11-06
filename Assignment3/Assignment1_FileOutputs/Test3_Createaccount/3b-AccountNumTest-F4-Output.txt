@@ -1,5 +1,0 @@
-Please input login account:
-Please Input PIN:
-Agent Login success!
-Input Account Number:
-Invalid Account Number: New account number cannot start with 0!

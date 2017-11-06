@@ -1,2 +1,0 @@
-Account Balance of Acct # 1234567 Equals 500!
-Account Balance of Acct # 1234567 Equals 200!

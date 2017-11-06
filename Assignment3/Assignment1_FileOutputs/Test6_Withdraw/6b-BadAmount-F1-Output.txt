@@ -1,2 +1,0 @@
-Error! BadInput for Withdrawal of ‘Two Hundred Dollars’
-Error! BadInput for Withdrawal of ‘$200.00’
