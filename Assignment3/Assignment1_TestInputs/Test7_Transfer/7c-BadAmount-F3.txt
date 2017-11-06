@@ -6,4 +6,4 @@ Transfer
 1234567
 123468
 3000
-Logout
+Exit

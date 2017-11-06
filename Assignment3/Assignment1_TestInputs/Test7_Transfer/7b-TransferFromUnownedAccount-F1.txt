@@ -1,9 +1,9 @@
 Login
 ATM
 1234567
-1234 // valid PIN for acct
+1234 
 Transfer
 1234568
 1234567
 300
-Logout
+Exit

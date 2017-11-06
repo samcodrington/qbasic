@@ -1,7 +1,7 @@
 Login
 Agent
 1000000
-1234 // valid PIN for acct
+1234
 CheckAcctBalance
 1234568
 CheckAcctBalance
@@ -14,4 +14,4 @@ CheckAcctBalance
 1234568
 CheckAcctBalance
 1234567
-Logout
+Exit

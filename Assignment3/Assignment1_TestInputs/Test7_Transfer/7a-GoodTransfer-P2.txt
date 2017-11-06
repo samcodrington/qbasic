@@ -1,7 +1,7 @@
 Login
 Agent
-1000000 //valid account number
-1234 //valid PIN for that accountnumber
+1000000 
+1234 
 CheckAccountBalance 
 1000000
 CheckAccountBalance
@@ -9,9 +9,9 @@ CheckAccountBalance
 Transfer
 1000000
 1234567
-3000 //amount to be transfered
+3000 
 CheckAccountBalance 
 1000000
 CheckAccountBalance
 1234567
-Logout 
+Exit 
