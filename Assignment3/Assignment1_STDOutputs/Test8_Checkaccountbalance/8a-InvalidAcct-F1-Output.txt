@@ -1,5 +1,8 @@
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
 Please input login account:
-Please Input PIN:
-Agent Login success!
-Input account number to be checked:
-Invalid account number!
+Please input PIN:
+Login success!
+Welcome, Admin! Logged in as account 1000000
+Enter the account to check balance of:
+Invalid account: User cannot check balance from account that is not their own!

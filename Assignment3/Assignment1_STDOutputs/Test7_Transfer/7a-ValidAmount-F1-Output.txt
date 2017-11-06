@@ -1,0 +1,10 @@
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
+Please input login account:
+Please input PIN:
+Login success!
+Welcome, Admin! Logged in as account 1000000
+Enter account to transfer from:
+Enter account to transfer to:
+Enter the amount you wish to transfer:
+Invalid Amount: Amount can only have numbers!
