@@ -1,1 +1,0 @@
-Error! WrongAccount: Attempted to Withdraw “300” to Account “1234568” while logged in as ATM user “1234567”
