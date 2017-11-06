@@ -4,4 +4,4 @@ Agent
 1000
 CheckaccountBalance
 123456
-logout
+Exit
