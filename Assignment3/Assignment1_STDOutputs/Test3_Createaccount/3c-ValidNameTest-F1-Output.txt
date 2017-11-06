@@ -4,5 +4,6 @@ Please input login account:
 Please input PIN:
 Login success!
 Welcome, Admin! Logged in as account 1000000
+Input Account Number:
 Input Account Name:
 Invalid Account Name: Only input letters numbers and spaces!
