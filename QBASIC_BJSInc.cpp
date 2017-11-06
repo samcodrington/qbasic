@@ -165,7 +165,7 @@ int main(){
 		}
 	}
     exit: //if user types Exit, the goto function leads back to here
-    writeNewMasterAccountsFile(AccountFile, validAccts);
+    //writeNewMasterAccountsFile(AccountFile, validAccts); FOR ASSIGNMENT 3 THIS IS REMOVED SINCE EACH TEST WILL BE USING THE EXACT SAME MASTER ACCOUNTS FILE
     writeNewAccountsFile(SummaryFile, validAccts);
     
     freopen("QBASIC_MergedTransactionSummaryFile.txt", "a+", stderr); //appends EOS to merged transaction summary log file
