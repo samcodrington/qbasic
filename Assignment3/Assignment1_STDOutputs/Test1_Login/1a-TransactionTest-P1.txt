@@ -1,0 +1,2 @@
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:

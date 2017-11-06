@@ -1,4 +1,0 @@
-Please input login session type:
-Please input login account:
-Please input PIN:
-Agent Login success!
