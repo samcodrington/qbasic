@@ -1,11 +1,7 @@
 Login
-Atm
+Machine
 1234567
 1234
 Deposit
 1234567
 Two Hundred Dollars
-Deposit
-1234567
-$200.00
-Exit

@@ -1,1 +1,9 @@
-Error! TooLargeDeposit for Deposit of ‘1000000’ by ‘Agent’ Account #1000000
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
+Please input login account:
+Please input PIN:
+Login success!
+Welcome, Billy! Logged in as account 12345678
+Enter destination account:
+Enter the amount you wish to deposit:
+Invalid transaction amount: Agent Cannot Issue Transactions greater than 999,999.99!

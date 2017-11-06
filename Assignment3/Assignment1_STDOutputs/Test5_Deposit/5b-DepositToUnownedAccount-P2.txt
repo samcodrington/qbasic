@@ -6,14 +6,5 @@ Login success!
 Welcome, Admin! Logged in as account 10000000
 Enter destination account:
 Enter the amount you wish to deposit:
-
-Login
-Agent
-1000000
-1234
-Deposit
-1234568
-300
-CheckAcctBalance
-1234568
-Exit
+Enter the account to check balance of:
+Account Balance of Acct # 1234568 Equals 300!
