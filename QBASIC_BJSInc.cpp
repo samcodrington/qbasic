@@ -299,7 +299,7 @@ void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the 
     string newNumber, newName, newPIN, buffer;
     bool newAgent;
     
-    if (isAgent){ // returns to main if currentAccount is not an agent account
+    if (!isAgent){ // returns to main if currentAccount is not an agent account
         throw TestException("Invalid session type for command!");
     }
     puts("Input Account Number:");
@@ -388,7 +388,7 @@ void DeleteAccount(vector<Account> &validAccounts, bool isAgent){//Accepts the e
     
     string delNumber,delName,delPIN;
     
-    if (isAgent){ // returns to main if currentAccount is not an agent account
+    if (!isAgent){ // returns to main if currentAccount is not an agent account
         throw TestException("Invalid session type for command!");
     }
     
