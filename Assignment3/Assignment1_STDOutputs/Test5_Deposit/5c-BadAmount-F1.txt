@@ -8,6 +8,3 @@ Enter destination account:
 Enter the amount you wish to deposit:
 Invalid Amount: Amount can only have numbers!
 
-
-Error! BadInput for Deposit of ‘Two Hundred Dollars’
-Error! BadInput for Deposit of ‘$200.00’

@@ -1,1 +1,8 @@
-Error! WrongAccount: Attempted to Withdraw “300” to Account “1234568” while logged in as ATM user “1234567”
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
+Please input login account:
+Please input PIN:
+Login success!
+Welcome, Billy! Logged in as account 1234567
+Enter destination account:
+Invalid account: User cannot withdraw from other accounts!

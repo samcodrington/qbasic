@@ -1,1 +1,10 @@
-Error! TooLargeWithdrawal for Withdrawal of ‘999’ after Withdrawal of ‘500’ by ‘ATM’ Account #1234567
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
+Please input login account:
+Please input PIN:
+Login success!
+Welcome, Agent! Logged in as account 12345678
+Enter destination account:
+Enter the amount you wish to withdraw:
+nt() && toWithdraw > ATM_MAX) {
+        throw TestException("Invalid Amount: Maximum withdraw amount reached for single session!
