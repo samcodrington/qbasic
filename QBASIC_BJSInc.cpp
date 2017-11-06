@@ -519,7 +519,7 @@ void Transfer(vector<Account> &validAccounts, Account &currentAccount){
         throw TestException("Invalid account: User cannot transfer from account that is not thier own!");
     }
     
-    puts("Enter account to transfer from:");
+    puts("Enter account to transfer to:");
     cin>>toAccount;
     
     if (toAccount == "Exit")
