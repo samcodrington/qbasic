@@ -6,4 +6,4 @@ Createaccount
 2234567
 Billy
 12345
-logout
+Exit
