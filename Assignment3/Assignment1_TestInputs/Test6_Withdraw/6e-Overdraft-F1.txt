@@ -5,4 +5,4 @@ Machine
 Withdraw
 1234567
 1
-Logout
+Exit

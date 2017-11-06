@@ -89,10 +89,10 @@ RUNNING TRANSFER TESTS:
 for i in Assignment1_TestInputs/Test7_Transfer/*.txt
 do
 	
-echo "Running test: ${i#Assignment1_TestInputs/Test7_Transfer}"
+echo "Running test: ${i#Assignment1_TestInputs/Test7_Transfer/}"
 
-./QBASIC_BJSInc.exe < $i > ${i#Assignment1_TestInputs/Test7_Transfer}
-mv ${i#Assignment1_TestInputs/Test7_Transfer} Assignment3_STDOutputs/Test7_Transfer
+./QBASIC_BJSInc.exe < $i > ${i#Assignment1_TestInputs/Test7_Transfer/}
+mv ${i#Assignment1_TestInputs/Test7_Transfer/} Assignment3_STDOutputs/Test7_Transfer
 
 done
 
@@ -102,10 +102,10 @@ RUNNING CHECKACCOUNTBALANCE TESTS:
 for i in Assignment1_TestInputs/Test8_Checkaccountbalance/*.txt
 do
 	
-echo "Running test: ${i#Assignment1_TestInputs/Test8_Checkaccountbalance}"
+echo "Running test: ${i#Assignment1_TestInputs/Test8_Checkaccountbalance/}"
 
-./QBASIC_BJSInc.exe < $i > ${i#Assignment1_TestInputs/TTest8_Checkaccountbalance}
-mv ${i#Assignment1_TestInputs/Test8_Checkaccountbalance} Assignment3_STDOutputs/Test8_Checkaccountbalance
+./QBASIC_BJSInc.exe < $i > ${i#Assignment1_TestInputs/Test8_Checkaccountbalance/}
+mv ${i#Assignment1_TestInputs/Test8_Checkaccountbalance/} Assignment3_STDOutputs/Test8_Checkaccountbalance
 
 done
 
