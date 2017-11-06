@@ -464,7 +464,7 @@ void Deposit(vector<Account> &validAccounts,Account &currentAccount){
     
 }
 
-void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &totWithdraw){
+void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &toWithdraw){
     string destAcct, buffer;
     float amount;
     
@@ -487,11 +487,11 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
         throw TestException("Invalid Amount: Amount can only have numbers!");
     }
     amount = stof(buffer);
-    totWithdraw +=amount;
+    toWithdraw +=amount;
     
     checkLegalTransactionAmount(currentAccount, amount);
     
-    if (!currentAccount.isAgent() && totWithdraw > ATM_MAX) {
+    if (!currentAccount.isAgent() && toWithdraw > ATM_MAX) {
         throw TestException("Invalid Amount: Maximum withdraw amount reached for single session!");
     }
     
