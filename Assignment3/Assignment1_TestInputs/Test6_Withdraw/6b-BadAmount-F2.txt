@@ -5,4 +5,4 @@ ATM
 Withdraw
 1234567
 -300
-Logout
+Exit

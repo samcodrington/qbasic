@@ -1,12 +1,12 @@
 Login
 Agent
-1000000 //valid account number
-1234 //valid PIN for that accountnumber
+1000000
+1234
 CheckAccountBalance 
 1000000
 Withdraw
 1000000
-300 //amount to be withdrawn
+300
 CheckAccountBalance
 1000000
-Logout
+Exit

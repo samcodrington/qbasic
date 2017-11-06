@@ -11,4 +11,4 @@ Withdraw
 Withdraw
 1234567
 999
-Logout
+Exit
