@@ -561,7 +561,7 @@ void CheckAccountBalance(vector<Account> &validAccounts, Account &currentAccount
         throw TestException("Invalid account: User cannot check balance from account that is not thier own!");
     }
     
-    cout<<"Balacnce in account "<<getDestAcct(validAccounts, destAccount)->getNum()<<" is $"<<getDestAcct(validAccounts, destAccount)->getBalance()<<endl;
+    cout<<"Balance in account "<<getDestAcct(validAccounts, destAccount)->getNum()<<" is $"<<getDestAcct(validAccounts, destAccount)->getBalance()<<endl;
 }
 /**
  * CheckLegalTransactionAmount checks the trasnactionAmt parameter agianst account conditions for a legal transaction
