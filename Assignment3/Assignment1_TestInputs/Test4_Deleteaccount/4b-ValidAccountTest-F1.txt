@@ -3,5 +3,5 @@ Agent
 1000000
 1000
 Deleteaccount
-00000
-logout
+0111111
+Exit

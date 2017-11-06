@@ -1,2 +1,10 @@
-Account Balance of Acct # 1000000 Equals 500!
-Account Balance of Acct # 1000000 Equals 200!
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
+Please input login account:
+Please input PIN:
+Login success!
+Welcome, Admin! Logged in as account 1000000
+Enter destination account:
+Enter the amount you wish to withdraw:
+Enter the account to check balance of:
+Balance in account 1000000 is $700.00

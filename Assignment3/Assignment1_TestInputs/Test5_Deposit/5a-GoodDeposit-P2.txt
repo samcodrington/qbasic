@@ -1,10 +1,10 @@
 Login
 Agent
 1000000 
-1234
+1000
 Deposit
 1000000
-3000
+1001
 CheckAccountBalance 
 1000000
 Exit 

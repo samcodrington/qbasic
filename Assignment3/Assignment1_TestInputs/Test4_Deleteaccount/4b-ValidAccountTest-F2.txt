@@ -3,5 +3,5 @@ Agent
 1000000
 1000
 Deleteaccount
-1234566 // Account number has not been made
-logout
+1211111
+Exit

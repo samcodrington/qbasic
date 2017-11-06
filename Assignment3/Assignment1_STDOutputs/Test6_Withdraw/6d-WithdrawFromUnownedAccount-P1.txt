@@ -1,2 +1,10 @@
-Account Balance of Acct # 1234568 Equals 600!
-Account Balance of Acct # 1234568 Equals 300!
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
+Please input login account:
+Please input PIN:
+Login success!
+Welcome, Admin! Logged in as account 1000000
+Enter destination account:
+Enter the amount you wish to deposit:
+Enter destination account:
+Enter the amount you wish to withdraw:

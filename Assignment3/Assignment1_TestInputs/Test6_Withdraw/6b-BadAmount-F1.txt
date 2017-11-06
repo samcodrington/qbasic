@@ -1,11 +1,9 @@
-Atm
-1234567
-1234
+Login
+Agent
+1000000
+1000
 Withdraw
-1234567
+1000000
 Two Hundred Dollars
-Withdraw
-1234567
-$200.000
 Exit
 
