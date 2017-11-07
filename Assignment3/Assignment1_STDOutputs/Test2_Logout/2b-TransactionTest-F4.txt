@@ -3,8 +3,7 @@ Please input login session type:
 Please input login account:
 Please input PIN:
 Login success!
-Welcome, Admin! Logged in as account 10000000
-EOS 0000000 0000 00000000 ****
+Welcome, Admin! Logged in as account 1000000
 Logged out
 Type "Login" to log in; Type "Exit" to leave the program:
 Must be logged in.

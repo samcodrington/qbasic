@@ -4,5 +4,5 @@ Please input login account:
 Please input PIN:
 Login success!
 Welcome, Billy! Logged in as account 1234567
-Error! BadInput for Deposit of ‘-300’
+Enter amount you wish to deposit:
 Invalid transaction amount: Cannot Deposit Negative Amount!

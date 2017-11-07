@@ -5,6 +5,6 @@ Agent
 Deposit
 1234567
 300
-CheckAcctBalance
+Checkaccountbalance
 1234567
 Exit

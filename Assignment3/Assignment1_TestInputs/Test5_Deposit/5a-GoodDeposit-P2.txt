@@ -5,6 +5,6 @@ Agent
 Deposit
 1000000
 1001
-CheckAccountBalance 
+Checkaccountbalance 
 1000000
 Exit 
