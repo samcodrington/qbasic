@@ -7,3 +7,4 @@ Welcome, Billy! Logged in as account 1234567
 Enter destination account:
 Enter the amount you wish to withdraw:
 Invalid Amount: Withdraw would result in an overdraft!
+Welcome, Billy! Logged in as account 1234567

@@ -64,7 +64,7 @@ void Account::changeBalance(const float amt){
         accountBalance += amt;
 }
 bool Account::overdraftCheck(const float amt){
-    if (accountBalance + amt >= 0) return true;
+    if (accountBalance - amt < 0) return true;
     else return false;
 }
 

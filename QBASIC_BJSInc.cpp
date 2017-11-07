@@ -434,7 +434,7 @@ void DeleteAccount(vector<Account> &validAccounts, bool isAgent){//Accepts the e
 
 void Deposit(vector<Account> &validAccounts,Account &currentAccount){
     string destAcct, buffer;
-    float amount;
+    float amount = 0.0;
     
     puts("Enter destination account:");
     cin>>destAcct;
@@ -475,7 +475,7 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
         throw TestException("Exit");
     
     if(!currentAccount.isAgent() && currentAccount.getNum() != getDestAcct(validAccounts, destAcct)->getNum()){
-        throw TestException("Invalid account: User cannot withdraw from other accounts!");
+        throw TestException("Invalid account: User cannot deposit to other accounts!");
     }
     
     puts("Enter the amount you wish to withdraw:");
@@ -487,15 +487,15 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
         throw TestException("Invalid Amount: Amount can only have numbers!");
     }
     amount = stof(buffer);
-    toWithdraw +=amount;
     
     checkLegalTransactionAmount(currentAccount, amount);
+    toWithdraw = toWithdraw + amount;
     
-    if (!currentAccount.isAgent() && toWithdraw > ATM_MAX) {
+    if (!currentAccount.isAgent() && toWithdraw > 1000) {
         throw TestException("Invalid Amount: Maximum withdraw amount reached for single session!");
     }
     
-    if (!getDestAcct(validAccounts, destAcct)->overdraftCheck(amount)) {
+    if (getDestAcct(validAccounts, destAcct)->overdraftCheck(amount)) {
         throw TestException("Invalid Amount: Withdraw would result in an overdraft!");
     }
     
@@ -536,7 +536,7 @@ void Transfer(vector<Account> &validAccounts, Account &currentAccount){
     amount = stof(buffer);
     checkLegalTransactionAmount(currentAccount, amount);
     
-    if (!getDestAcct(validAccounts, fromAccount)->overdraftCheck(amount)) {
+    if (getDestAcct(validAccounts, fromAccount)->overdraftCheck(amount)) {
         throw TestException("Invalid Amount: Transfer would result in an overdraft!");
     }
     

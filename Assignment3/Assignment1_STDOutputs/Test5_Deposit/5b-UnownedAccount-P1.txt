@@ -8,8 +8,5 @@ Enter destination account:
 Enter the amount you wish to deposit:
 Welcome, Admin! Logged in as account 1000000
 Enter the account to check balance of:
-Balance in account 1234567 is $300.00
-<<<<<<< HEAD
+Balance in account 1234567 is $300
 Welcome, Admin! Logged in as account 1000000
-=======
->>>>>>> e936d2181189694956bcbd2f0967288d54047d92

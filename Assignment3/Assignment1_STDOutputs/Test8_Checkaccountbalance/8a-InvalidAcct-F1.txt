@@ -6,4 +6,3 @@ Login success!
 Welcome, Admin! Logged in as account 1000000
 Enter the account to check balance of:
 Balance in account Invalid Account Number: Account number must be exactly 7 digits long!
-

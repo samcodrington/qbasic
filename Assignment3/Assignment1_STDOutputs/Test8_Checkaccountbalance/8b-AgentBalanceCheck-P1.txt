@@ -6,3 +6,4 @@ Login success!
 Welcome, Admin! Logged in as account 1000000
 Enter the account to check balance of:
 Balance in account 1234567 is $0
+Welcome, Admin! Logged in as account 1000000
