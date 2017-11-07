@@ -4,7 +4,7 @@ Agent
 1000
 Withdraw
 1000000
-300
+100
 Checkaccountbalance
 1000000
 Exit

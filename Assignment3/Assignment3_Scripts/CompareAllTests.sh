@@ -1,22 +1,23 @@
 #!/bin/bash
-clear
-cd Documents/Assignment3
+clear # clear terminal so its easier to see the test cases
+cd Documents/Assignment3 # gets into local environment where all the test cases are located
 
 echo "Checking difference of actual tested standard outputs and expected outputs:
 "
 
 echo "CHECKING DIFFERENCE IN LOGIN STD OUTPUT:
 "
-for i in Assignment3_STDOutputs/Test1_Login/*.txt
+for i in Assignment3_STDOutputs/Test1_Login/*.txt # for each file text file in Assignment3_STDOutputs/Test1_Login/ ...
 do
 	
-echo "Running test: ${i#Assignment3_STDOutputs/Test1_Login/}"
+echo "Running test: ${i#Assignment3_STDOutputs/Test1_Login/}" # text box to make it easier to identify later on which test is being examined
 
-diff $i Assignment1_STDOutputs/Test1_Login/${i#Assignment3_STDOutputs/Test1_Login/}
+diff $i Assignment1_STDOutputs/Test1_Login/${i#Assignment3_STDOutputs/Test1_Login/} # check the difference between Assignment3_STDOutputs/Test1_Login (tested output) and Assignment1_STDOutputs/Test1_Login/(predicted output)
 
 done
 
-echo "
+# loops identical to above are ran albiet with different path location for different tests (i.e. a loop for login, createaccount ...)
+echo " 
 CHECKING DIFFERENCE IN LOGOUT STD OUTPUT:
 "
 for i in Assignment3_STDOutputs/Test2_Logout/*.txt
