@@ -3,8 +3,10 @@ Please input login session type:
 Please input login account:
 Please input PIN:
 Login success!
-Welcome, Admin! Logged in as account 10000000
+Welcome, Agent! Logged in as account 10000000
 Enter destination account:
 Enter the amount you wish to deposit:
 Invalid transaction amount: Agent Cannot Issue Transactions greater than 999,999.99!
 Welcome, Admin! Logged in as account 10000000
+Invalid transaction amount: Agent Cannot Issue Transactions greater than 999,999.99!
+

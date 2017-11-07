@@ -3,8 +3,8 @@ Please input login session type:
 Please input login account:
 Please input PIN:
 Login success!
-Welcome, Admin! Logged in as account 1000000
+Welcome, Agent! Logged in as account 10000000
 Enter destination account:
 Enter the amount you wish to withdraw:
-Enter the account to check balance of:
-Balance in account 1000000 is $700.00
+Enter the account to check balance of: 
+Balance in account 1234567 is $700.00

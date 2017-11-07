@@ -475,7 +475,7 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
         throw TestException("Exit");
     
     if(!currentAccount.isAgent() && currentAccount.getNum() != getDestAcct(validAccounts, destAcct)->getNum()){
-        throw TestException("Invalid account: User cannot deposit to other accounts!");
+        throw TestException("Invalid account: User cannot withdraw from other accounts!");
     }
     
     puts("Enter the amount you wish to withdraw:");
