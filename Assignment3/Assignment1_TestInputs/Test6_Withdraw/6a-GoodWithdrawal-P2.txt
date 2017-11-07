@@ -5,6 +5,6 @@ Agent
 Withdraw
 1000000
 300
-CheckAccountBalance
+Checkaccountbalance
 1000000
 Exit

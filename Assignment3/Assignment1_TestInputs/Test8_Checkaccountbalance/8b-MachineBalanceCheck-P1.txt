@@ -2,6 +2,6 @@ Login
 Agent
 1234567
 1234
-CheckaccountBalance
+Checkaccountbalance
 1234567
 Exit

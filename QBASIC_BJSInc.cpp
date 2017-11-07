@@ -495,7 +495,7 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
         throw TestException("Invalid Amount: Maximum withdraw amount reached for single session!");
     }
     
-    if (getDestAcct(validAccounts, destAcct)->overdraftCheck(amount*-1)) {
+    if (getDestAcct(validAccounts, destAcct)->overdraftCheck(amount)) {
         throw TestException("Invalid Amount: Withdraw would result in an overdraft!");
     }
     
@@ -536,7 +536,7 @@ void Transfer(vector<Account> &validAccounts, Account &currentAccount){
     amount = stof(buffer);
     checkLegalTransactionAmount(currentAccount, amount);
     
-    if (getDestAcct(validAccounts, fromAccount)->overdraftCheck(amount*-1)) {
+    if (getDestAcct(validAccounts, fromAccount)->overdraftCheck(amount)) {
         throw TestException("Invalid Amount: Transfer would result in an overdraft!");
     }
     

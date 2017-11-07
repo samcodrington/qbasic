@@ -8,6 +8,6 @@ Deposit
 Withdraw
 1234567
 300
-CheckAccountBalance
+Checkaccountbalance
 1234567
 Exit 
