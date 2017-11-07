@@ -1,7 +1,0 @@
-Please input login account:
-Please Input PIN:
-Agent Login success!
-Input Account Number:
-Invalid Account Name: 
-Input account PIN:
-Invalid Account PIN: PIN must be 4 digits long!

@@ -1,7 +1,7 @@
 Login
-Agent
+Machine
 1000000
 1000
 Createaccount
 LLLLLLL
-logout
+Exit

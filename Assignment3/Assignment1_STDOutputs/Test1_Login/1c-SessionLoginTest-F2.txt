@@ -3,3 +3,4 @@ Please input login session type:
 Please input login account:
 Please input PIN:
 Invalid PIN
+Type "Login" to log in; Type "Exit" to leave the program:

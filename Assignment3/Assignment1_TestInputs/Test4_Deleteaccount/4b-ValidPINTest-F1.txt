@@ -3,7 +3,7 @@ Agent
 1000000
 1000
 Deleteaccount
-1234567 // Valid account number
-Billy // Right name
-1111 //Wrong PIN
-logout
+1234567
+Billy
+1111
+Exit

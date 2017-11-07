@@ -4,4 +4,4 @@ Agent
 1000
 Createaccount
 0234567
-logout
+Exit

@@ -165,8 +165,8 @@ int main(){
 		}
 	}
     exit: //if user types Exit, the goto function leads back to here
-    writeNewMasterAccountsFile(AccountFile, validAccts);
-    writeNewAccountsFile(SummaryFile, validAccts);
+    //writeNewMasterAccountsFile(AccountFile, validAccts); FOR ASSIGNMENT 3 THIS IS REMOVED SINCE EACH TEST WILL BE USING THE EXACT SAME MASTER ACCOUNTS FILE
+    //writeNewAccountsFile(SummaryFile, validAccts);
     
     freopen("QBASIC_MergedTransactionSummaryFile.txt", "a+", stderr); //appends EOS to merged transaction summary log file
     clog<<"EOS 0000000 0000 00000000 ****"<<endl;
@@ -299,7 +299,7 @@ void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the 
     string newNumber, newName, newPIN, buffer;
     bool newAgent;
     
-    if (isAgent){ // returns to main if currentAccount is not an agent account
+    if (!isAgent){ // returns to main if currentAccount is not an agent account
         throw TestException("Invalid session type for command!");
     }
     puts("Input Account Number:");
@@ -340,7 +340,7 @@ void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the 
     }
     
     if (newName.length() < 3 || newName.length() > 20) {// Makes sure name is between 3-20 chars
-        throw TestException("Invalid Account Name: Space not allowed at beginning of name!");
+        throw TestException("Invalid Account Name: Must be 3-20 characters long!");
     }
     
     puts("Input account PIN:");
@@ -388,7 +388,7 @@ void DeleteAccount(vector<Account> &validAccounts, bool isAgent){//Accepts the e
     
     string delNumber,delName,delPIN;
     
-    if (isAgent){ // returns to main if currentAccount is not an agent account
+    if (!isAgent){ // returns to main if currentAccount is not an agent account
         throw TestException("Invalid session type for command!");
     }
     
@@ -495,7 +495,7 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
         throw TestException("Invalid Amount: Maximum withdraw amount reached for single session!");
     }
     
-    if (getDestAcct(validAccounts, destAcct)->overdraftCheck(amount*-1)) {
+    if (getDestAcct(validAccounts, destAcct)->overdraftCheck(amount)) {
         throw TestException("Invalid Amount: Withdraw would result in an overdraft!");
     }
     
@@ -519,7 +519,7 @@ void Transfer(vector<Account> &validAccounts, Account &currentAccount){
         throw TestException("Invalid account: User cannot transfer from account that is not thier own!");
     }
     
-    puts("Enter account to transfer from:");
+    puts("Enter account to transfer to:");
     cin>>toAccount;
     
     if (toAccount == "Exit")
@@ -536,7 +536,7 @@ void Transfer(vector<Account> &validAccounts, Account &currentAccount){
     amount = stof(buffer);
     checkLegalTransactionAmount(currentAccount, amount);
     
-    if (getDestAcct(validAccounts, fromAccount)->overdraftCheck(amount*-1)) {
+    if (getDestAcct(validAccounts, fromAccount)->overdraftCheck(amount)) {
         throw TestException("Invalid Amount: Transfer would result in an overdraft!");
     }
     

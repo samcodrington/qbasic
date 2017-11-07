@@ -1,5 +1,5 @@
 Login
-ATM
+Machine
 1234567
 1234
 Deposit

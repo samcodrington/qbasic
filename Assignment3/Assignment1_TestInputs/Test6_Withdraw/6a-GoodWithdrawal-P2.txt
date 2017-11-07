@@ -1,12 +1,10 @@
 Login
 Agent
 1000000
-1234
-CheckAccountBalance 
-1000000
+1000
 Withdraw
 1000000
 300
-CheckAccountBalance
+Checkaccountbalance
 1000000
 Exit

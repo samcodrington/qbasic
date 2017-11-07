@@ -1,12 +1,13 @@
 Login
-Atm
+Machine
 1234567
 1234
-CheckAccountBalance 
+Deposit
 1234567
+300
 Withdraw
 1234567
 300
-CheckAccountBalance
+Checkaccountbalance
 1234567
 Exit 

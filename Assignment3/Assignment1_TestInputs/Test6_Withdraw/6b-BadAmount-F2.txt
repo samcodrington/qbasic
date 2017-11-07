@@ -1,8 +1,10 @@
 Login
-ATM
+Machine
 1234567
 1234
+Deposit
+1
 Withdraw
 1234567
--300
+-1
 Exit

@@ -1,0 +1,23 @@
+<<<<<<< HEAD:Assignment3/Assignment1_TestInputs/Test5_Deposit/5b-DepositToUnownedAccount-F1.txt
+Login
+Agent
+1000000
+1234
+Deposit
+1234568
+300
+CheckAcctBalance
+1234568
+Exit
+=======
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
+Please input login account:
+Please input PIN:
+Login success!
+Welcome, Admin! Logged in as account 1000000
+Enter destination account:
+Enter the amount you wish to deposit:
+Enter the account to check balance of:
+Balance in account 1234567 is $300.00
+>>>>>>> d1a46140a6e9c9c38d9a8aab6f89e3a2811bbb9a:Assignment3/Assignment1_STDOutputs/Test5_Deposit/5b-UnownedAccount-P1.txt

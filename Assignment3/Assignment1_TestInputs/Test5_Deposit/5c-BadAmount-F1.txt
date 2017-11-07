@@ -5,3 +5,7 @@ Machine
 Deposit
 1234567
 Two Hundred Dollars
+<<<<<<< HEAD
+=======
+Exit
+>>>>>>> d1a46140a6e9c9c38d9a8aab6f89e3a2811bbb9a

@@ -1,4 +1,0 @@
-Please input login account:
-Please Input PIN:
-Machine Login success!
-Invalid Session Type For Command

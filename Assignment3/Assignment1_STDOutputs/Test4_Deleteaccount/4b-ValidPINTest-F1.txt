@@ -1,0 +1,10 @@
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
+Please input login account:
+Please input PIN:
+Login success!
+Welcome, Admin! Logged in as account 1000000
+Input account number:
+Input account name:
+Input account PIN:
+Incorrect PIN!

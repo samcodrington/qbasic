@@ -1,1 +1,0 @@
-Error! BadInput for Transfer of ‘-30’ from 'ATM' Account #1234567

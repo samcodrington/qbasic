@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Type "Login" to log in; Type "Exit" to leave the program:
 Please input login session type:
 Please input login account:
@@ -10,3 +11,17 @@ Enter destination account:
 Enter the amount you wish to withdraw:
 Enter the account to check balance of: 
 Balance in account 1234567 is $700.00
+=======
+Type "Login" to log in; Type "Exit" to leave the program:
+Please input login session type:
+Please input login account:
+Please input PIN:
+Login success!
+Welcome, Billy! Logged in as account 1234567
+Enter destination account:
+Enter the amount you wish to deposit:
+Enter destination account:
+Enter the amount you wish to withdraw:
+Enter the account to check balance of:
+Balance in account 1234567 is $0
+>>>>>>> d1a46140a6e9c9c38d9a8aab6f89e3a2811bbb9a
