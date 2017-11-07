@@ -8,6 +8,6 @@ Input account number:
 Input account name:
 Input account PIN:
 Account “1234567” has been deleted!
+Welcome, Admin! Logged in as account 1000000
 Enter destination account:
 Account does not exist!
-

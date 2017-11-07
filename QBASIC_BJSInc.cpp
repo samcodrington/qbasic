@@ -269,15 +269,14 @@ Account Login(vector<Account> acctvector) {
         throw TestException("Exit");
     
     acctNumber = buffer;
-    
-    puts("Please input PIN:");
-    cin >> buffer;
-    if (buffer == "Exit")
-        throw TestException("Exit");
-    PIN = buffer;
-    
+   
 	for (int i = 0; i < acctvector.size(); i++) {
         if (acctvector.at(i).getNum() == acctNumber){
+		    puts("Please input PIN:");
+		    cin >> buffer;
+		    if (buffer == "Exit")
+		        throw TestException("Exit");
+		    PIN = buffer;
             if(acctvector.at(i).getPIN() == PIN) {
                 if (acctvector.at(i).isAgent() == loginType || acctvector.at(i).isAgent() == 0) {
                     return acctvector.at(i);
@@ -375,7 +374,7 @@ void CreateAccount(vector<Account> &validAccounts, bool isAgent){ //Accepts the 
         printf("Agent account has been created with Number: \"%s\", Name: \"%s\", and PIN: \"%s\"\n",newNumber.c_str(), newName.c_str(), newPIN.c_str());
     }
     else{
-        throw TestException("Invalid account type! Must be either\"Machine\" or \"Agent\"! ");
+        throw TestException("Invalid account type! Must be either \"Machine\" or \"Agent\"! ");
     }
     
     validAccounts.push_back(Account(newNumber, newName, newPIN, newAgent)); //Creates a new instance of an account using user inputs in the validAccounts vector
@@ -446,13 +445,14 @@ void Deposit(vector<Account> &validAccounts,Account &currentAccount){
     if(!currentAccount.isAgent() && currentAccount.getNum() != getDestAcct(validAccounts, destAcct)->getNum()){
         throw TestException("Invalid account: User cannot deposit to other accounts!");
     }
-    
+	getDestAcct(validAccounts, destAcct)->changeBalance(amount);
+	
     puts("Enter the amount you wish to deposit:");
     cin>>buffer;
     if (buffer == "Exit")
         throw TestException("Exit");
     
-    if (buffer.find_first_not_of("0123456789") != string::npos) {// Makes sure amount is only numerical
+    if (buffer.find_first_not_of("-0123456789") != string::npos) {// Makes sure amount is only numerical
         throw TestException("Invalid Amount: Amount can only have numbers!");
     }
     amount = stof(buffer);
@@ -483,7 +483,7 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
     if (buffer == "Exit")
         throw TestException("Exit");
     
-    if (buffer.find_first_not_of("0123456789") != string::npos) {// Makes sure amount is only numerical
+    if (buffer.find_first_not_of("-0123456789") != string::npos) {// Makes sure amount is only numerical
         throw TestException("Invalid Amount: Amount can only have numbers!");
     }
     amount = stof(buffer);
@@ -495,7 +495,7 @@ void Withdraw(vector<Account> &validAccounts, Account &currentAccount, float &to
         throw TestException("Invalid Amount: Maximum withdraw amount reached for single session!");
     }
     
-    if (getDestAcct(validAccounts, destAcct)->overdraftCheck(amount)) {
+    if (!getDestAcct(validAccounts, destAcct)->overdraftCheck(amount)) {
         throw TestException("Invalid Amount: Withdraw would result in an overdraft!");
     }
     
@@ -530,13 +530,13 @@ void Transfer(vector<Account> &validAccounts, Account &currentAccount){
     if (buffer == "Exit")
         throw TestException("Exit");
     
-    if (buffer.find_first_not_of("0123456789") != string::npos) {// Makes sure amount is only numerical
+    if (buffer.find_first_not_of("-0123456789") != string::npos) {// Makes sure amount is only numerical
         throw TestException("Invalid Amount: Amount can only have numbers!");
     }
     amount = stof(buffer);
     checkLegalTransactionAmount(currentAccount, amount);
     
-    if (getDestAcct(validAccounts, fromAccount)->overdraftCheck(amount)) {
+    if (!getDestAcct(validAccounts, fromAccount)->overdraftCheck(amount)) {
         throw TestException("Invalid Amount: Transfer would result in an overdraft!");
     }
     

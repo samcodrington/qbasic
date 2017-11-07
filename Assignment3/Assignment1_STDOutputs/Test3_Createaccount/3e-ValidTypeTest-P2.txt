@@ -9,3 +9,4 @@ Input Account Name:
 Input account PIN:
 Input account type:
 Agent account has been created with Number: "1000001", Name: "Bob", and PIN: "1234"
+Welcome, Admin! Logged in as account 1000000

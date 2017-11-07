@@ -6,3 +6,4 @@ Login success!
 Welcome, Admin! Logged in as account 1000000
 Input account number:
 Invalid Account Number: Input is not a possible account number!!
+Welcome, Billy! Logged in as account 1234567

@@ -8,3 +8,4 @@ Input account number:
 Input account name:
 Input account PIN:
 Incorrect PIN!
+Welcome, Admin! Logged in as account 1000000

@@ -5,4 +5,4 @@ Please input PIN:
 Login success!
 Welcome, Admin! Logged in as account 1000000
 Input Account Number:
-Invalid Account Number: New account number must be exactly 7 digits long!
+Invalid Account Number: New account number must be exactly 7 digits long!Welcome, Admin! Logged in as account 1000000

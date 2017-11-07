@@ -5,4 +5,5 @@ Please input PIN:
 Login success!
 Welcome, Admin! Logged in as account 1000000
 Enter the account to check balance of:
-Invalid account: User cannot check balance from account that is not their own!
+Balance in account Invalid Account Number: Account number must be exactly 7 digits long!
+

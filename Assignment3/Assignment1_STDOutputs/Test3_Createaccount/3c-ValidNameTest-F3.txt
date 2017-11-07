@@ -7,3 +7,4 @@ Welcome, Admin! Logged in as account 1000000
 Input Account Number:
 Input Account Name:
 Invalid Account Name: Must be 3-20 characters long!
+Welcome, Admin! Logged in as account 1000000

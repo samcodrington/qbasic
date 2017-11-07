@@ -5,6 +5,6 @@ Machine
 Deposit
 1234567
 1000
-CheckAccountBalance 
+Checkaccountbalance
 1234567
 Exit

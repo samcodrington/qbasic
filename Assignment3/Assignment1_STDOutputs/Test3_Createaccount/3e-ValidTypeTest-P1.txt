@@ -9,3 +9,4 @@ Input Account Name:
 Input account PIN:
 Input account type:
 User account has been created with Number: "2234567", Name: "Billy", and PIN: "1234"
+Welcome, Admin! Logged in as account 1000000

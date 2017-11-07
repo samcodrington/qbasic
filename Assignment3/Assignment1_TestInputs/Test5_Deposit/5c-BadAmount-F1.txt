@@ -4,5 +4,5 @@ Machine
 1234
 Deposit
 1234567
-Two Hundred Dollars
+TwoHundredDollars
 Exit
