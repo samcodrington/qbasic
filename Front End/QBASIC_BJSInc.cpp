@@ -16,7 +16,8 @@
 
 using namespace std;
 
-vector<Account> ReadAccountsFile(const string);
+vector<string> ReadValidFile(const string);
+vector<Account> ReadAccountsFile(const string, vector<string>);
 
 Account Login(vector<Account> acctvector);
 
@@ -39,12 +40,12 @@ void writeNewAccountsFile(const string, vector<Account>);
 
 // -----Main-----
 int main(){
-    const string AccountFile = "QBASIC_MasterAccountFile.txt";
+    const string MasterAccountFile = "QBASIC_MasterAccountFile.txt";
     const string SummaryFile = "QBASIC_ValidAccountFile.txt";
     
-    
-	vector<Account> validAccts = ReadAccountsFile(AccountFile);
-    freopen("QBASIC_MergedTransactionSummaryFile.txt", "w", stderr); //deletes any old MTSF and creates a new one
+    vector<string> validAccountNumbers = ReadValidFile(SummaryFile);
+	vector<Account> validAccts = ReadAccountsFile(MasterAccountFile, validAccountNumbers);
+    freopen("QBASIC_MergedTransactionSummaryFile.txt", "w", stderr);
     fclose(stderr); // immediately closes it so logs only are written when logged in
     
 	while (true) {
@@ -165,8 +166,9 @@ int main(){
 		}
 	}
     exit: //if user types Exit, the goto function leads back to here
-    //writeNewMasterAccountsFile(AccountFile, validAccts); FOR ASSIGNMENT 3 THIS IS REMOVED SINCE EACH TEST WILL BE USING THE EXACT SAME MASTER ACCOUNTS FILE
-    //writeNewAccountsFile(SummaryFile, validAccts);
+    // NOTE: when this program completes (i.e. when user types 'exit') it is assumed that the current transaction day is completed and the merged transaction summary file is written
+    writeNewMasterAccountsFile(MasterAccountFile, validAccts);
+    writeNewAccountsFile(SummaryFile, validAccts);
     
     freopen("QBASIC_MergedTransactionSummaryFile.txt", "a+", stderr); //appends EOS to merged transaction summary log file
     clog<<"EOS 0000000 0000 00000000 ****"<<endl;
@@ -176,10 +178,21 @@ int main(){
 }
 
 //-----IO FUNCTIONS-----
+vector<string> ReadValidFile(const string validfilename){
+        vector<string> validAcctNumbers;
+    
+        string ln,strhold;
+        ifstream fileIn(validfilename.c_str()); // Read all valid accounts from the "Valid accounts file"
+    while (getline(fileIn, ln)){
+        validAcctNumbers.push_back(ln);
+    }
+    return validAcctNumbers;
+}
 
-vector<Account> ReadAccountsFile(const string filename) {
+vector<Account> ReadAccountsFile(const string masterfilename, vector<string> validAcctNumbers) {
     
     vector<string> acctNumbers;
+    vector<string> ValidAcctNumbers;
     vector<string> acctNames;
     vector<string> acctPins;
     vector<float> acctBalance;
@@ -189,7 +202,7 @@ vector<Account> ReadAccountsFile(const string filename) {
     string ln,strhold;
     int numAccounts = 0;
     bool bholder;
-    ifstream fileIn(filename.c_str());
+    ifstream fileIn(masterfilename.c_str());
     
     if (fileIn.fail()) {
         return validAccounts;
@@ -215,7 +228,13 @@ vector<Account> ReadAccountsFile(const string filename) {
     fileIn.close();
     
     for (int i = 0;i<numAccounts;i++) {
-        validAccounts.push_back(Account(acctNumbers.at(i), acctNames.at(i), acctPins.at(i), acctBalance.at(i), acctTypes.at(i)));
+        for (int j = 0; j<numAccounts; j++) {
+            if(acctNumbers.at(i) == validAcctNumbers.at(j)) // Only load the valid accounts from the master accounts file into memory
+            {
+                validAccounts.push_back(Account(acctNumbers.at(i), acctNames.at(i), acctPins.at(i), acctBalance.at(i), acctTypes.at(i)));
+                break;
+            }
+        }
     }
         
     return validAccounts;
@@ -229,7 +248,6 @@ void writeNewMasterAccountsFile(const string MasterName,vector<Account> validAcc
         fileOut<<validAccounts.at(i).getNum()<<" "<<(validAccounts.at(i).getBalance())*100<<" "<<validAccounts.at(i).getName()<<" "<< validAccounts.at(i).getPIN()<<" "<<validAccounts.at(i).isAgent()<<endl;
     }
     fileOut.close();
-
 }
 
 void writeNewAccountsFile(const string SummaryName, vector<Account> validAccounts){ //Valid account file contains just valid account numbers followed by an invalid number (In this case "0000000")
