@@ -2,9 +2,8 @@
 //  QBASIC_Backend_BJSInc.cpp
 //  QBASIC_BJSInc
 //
-//  Created by Jerry Haron on 2017-11-13.
-//  Copyright © 2017 Jerry Haron. All rights reserved.
-//
+//  A BJS_Inc Project.
+// Intention of this program is to read the merged transaction summary file from the previous bank day and apply the outlined changes (throwing standard output errors if particular trnasactions are deemed invalid). After all lines of the trnasaction summary file have been parsed, program then ourputs an updated master accounts file and valid accounts list for use in front end sessions the following day
 
 #include <iostream>
 #include <string>
@@ -30,8 +29,7 @@ int main(){
     const string MgdTrscnSummaryFile = "QBASIC_MergedTransactionSummaryFile.txt";
     
     vector<Account> validAccts = ReadAccountsFile(MasterAccountFile); // Loads the valid accounts from the master file into memory
-    vector<string> deletedAccounts; //container to store deleted accounts for valid account list
-    
+
     string ln, strhold; // two holder variables for the main while loop function
     string cmd, firstAccount, secondAccount, name; // create temporary holder variables for each sepearate value in transaction summary file
     float value;
@@ -142,7 +140,7 @@ vector<Account> ReadAccountsFile(const string masterfilename) {
     return validAccounts;
 }
 // -------------------------------------
-
+// Writes a full master accounts list from scratch, overwriting existing accounts list in same file location. Inputs all the details of each valid account into .txt file
 void writeNewMasterAccountsFile(const string MasterName,vector<Account> validAccounts){
     
     ofstream fileOut(MasterName.c_str());
@@ -153,7 +151,7 @@ void writeNewMasterAccountsFile(const string MasterName,vector<Account> validAcc
     fileOut.close();
 }
 // -------------------------------------
-
+// Writes a full valid accounts list from scratch, overwriting existing accounts list in same file location. Inputs only account number to file and ends with invalid '0000000' number
 void writeNewValidAccountsFile(const string validName, vector<Account> &validAccounts){ //Valid account file contains just valid account numbers followed by an invalid number (In this case "0000000")
     
     ofstream fileOut(validName.c_str());
@@ -167,7 +165,7 @@ void writeNewValidAccountsFile(const string validName, vector<Account> &validAcc
 
 
 // ---------------- FUNCTIONS ---------------------
-
+//Takes an account number and name as input. Adds created account to valid accounts list (name will be included in master/valid accounts .txt file). Makes sure that input number does not match and existing number in valid accounts list
 void createAccount(vector<Account> &validAccounts, string createdAccount,string accountName){
     for (int i = 0; i<validAccounts.size(); i++) {
         if (createdAccount == validAccounts.at(i).getNum()) { //If account already exists, throw an error
@@ -178,9 +176,13 @@ void createAccount(vector<Account> &validAccounts, string createdAccount,string 
     return;
 }
 // -------------------------------------
+//Takes an account number and name as input. Deletes account from valid accounts list (name will not show up in master/valid accounts .txt file). Makes sure that account has a zero balance before deletion and that the inut name matches up with account name
 void deleteAccount(vector<Account> &validAccounts, string deletedAccount,string accountName){
     for (int i = 0; i<validAccounts.size(); i++) {
         if (deletedAccount == validAccounts.at(i).getNum()) {
+            if (accountName == validAccounts.at(i).getName()) {
+            throw TestException("Invalid name! Account name and input name must match");
+            }
             if (validAccounts.at(i).getBalance() != 0) { // if target deleted account is not zero, throw an error
                 throw TestException("Invalid balance! Account must be empty before deletion");
             }
@@ -191,6 +193,7 @@ void deleteAccount(vector<Account> &validAccounts, string deletedAccount,string 
     throw TestException("Invalid number! Account number does not exist!");
 }
 // -------------------------------------
+//Takes an account number and a monetary value as input. Adds money to the corresponding account instance. Makes sure that account will not exceed the maximum balance of 1000000 dollars
 void deposit(vector<Account> &validAccounts, string accountNum, float value){
     
     for (int i = 0; i<validAccounts.size(); i++) {
@@ -206,6 +209,7 @@ void deposit(vector<Account> &validAccounts, string accountNum, float value){
     throw TestException("Invalid number! Account number does not exist!");
 }
 // -------------------------------------
+// Takes an account number and a monetary value as input. Removes money from the corresponding account instance. Makes sure that account exists and will not be overdrawn
 void withdraw(vector<Account> &validAccounts, string accountNum, float value){
     for (int i = 0; i<validAccounts.size(); i++) {
         if (accountNum == validAccounts.at(i).getNum()) {
@@ -219,6 +223,7 @@ void withdraw(vector<Account> &validAccounts, string accountNum, float value){
     throw TestException("Invalid number! Account number does not exist!");
 }
 // -------------------------------------
+//Transfer function takes two accounts and and a numerical vlue as input. Transfers a balance from the first account instance to the second instance, making sure that: Both accounts exist, the 'from account' will not be overdrawn and the 'to account' will not exceed the maximum balance
 void transfer(vector<Account> &validAccounts, string fromAccount, string toAccount, float value){
     for (int i = 0; i<validAccounts.size(); i++) {
         if (fromAccount == validAccounts.at(i).getNum()) {

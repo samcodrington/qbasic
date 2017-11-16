@@ -1,12 +1,9 @@
 //
-//  QBASIC_BJSInc.hpp
+//  QBASIC_Backend_BJSInc.cpp
 //  QBASIC_BJSInc
 //
-//  Created by Jerry Haron on 2017-10-15.
-//  Copyright © 2017 Jerry Haron. All rights reserved.
+//  A BJS_Inc Project.
 //
-
-
 #ifndef QBASIC_BJSInc_hpp
 #define QBASIC_BJSInc_hpp
 

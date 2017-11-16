@@ -1,11 +1,9 @@
 //
-//  QBASIC_BJSInc_Functions.cpp
+//  QBASIC_Backend_BJSInc.cpp
 //  QBASIC_BJSInc
 //
-//  Created by Jerry Haron on 2017-10-15.
-//  Copyright © 2017 Jerry Haron. All rights reserved.
+//  A BJS_Inc Project.
 //
-
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -53,10 +51,10 @@ float Account::getBalance(){ //Accessor for the particular "Account" class' acco
     return accountBalance;
 }
 
-void Account::changeBalance(const float amt){
+void Account::changeBalance(const float amt){ //adds deposit amount to account's valance variable (must inut negative value if withdraw)
         accountBalance += amt;
 }
-bool Account::overdraftCheck(const float amt){
+bool Account::overdraftCheck(const float amt){ // checks if subtracting an amount will cause the particular account instnace to be overdraft
     if (accountBalance - amt < 0) return true;
     else return false;
 }
