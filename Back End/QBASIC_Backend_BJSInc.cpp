@@ -126,7 +126,11 @@ vector<Account> ReadAccountsFile(const string masterfilename) {
         getline(strng, strhold, ' ');
         acctNumbers.push_back(strhold);
         getline(strng, strhold, ' ');
-        acctBalance.push_back(stof(strhold));
+        try {
+            acctBalance.push_back(stof(strhold));
+        } catch (const std::invalid_argument&) {
+            numAccounts--;
+        }
         getline(strng, strhold, ' ');
         acctNames.push_back(strhold);
         numAccounts++;
