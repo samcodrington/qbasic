@@ -147,10 +147,38 @@ vector<Account> ReadAccountsFile(const string masterfilename) {
 // Writes a full master accounts list from scratch, overwriting existing accounts list in same file location. Inputs all the details of each valid account into .txt file
 void writeNewMasterAccountsFile(const string MasterName,vector<Account> validAccounts){
     
+    int acctNumSortArray[validAccounts.size()];
+    
     ofstream fileOut(MasterName.c_str());
     
+    
+    for (int i = 0; i<validAccounts.size(); i++) { // Load all account numbers into an array
+        try {
+            acctNumSortArray[i] = stoi(validAccounts.at(i).getNum());
+        } catch (const std::invalid_argument&) {
+            fileOut<<validAccounts.at(i).getNum()<<" "<<(validAccounts.at(i).getBalance())*100<<" "<<validAccounts.at(i).getName()<<endl;
+        }
+    }
+    
+    // Bubble sort the array
+    int temp;
+    for (int i = 0; i < validAccounts.size()-1; i++){
+        for (int j = 0; j < validAccounts.size()-i-1; j++){
+            if (acctNumSortArray[j] > acctNumSortArray[j+1]){
+                temp = acctNumSortArray[j];
+                acctNumSortArray[j] = acctNumSortArray[j+1];
+                acctNumSortArray[j+1] = temp;
+            }
+        }
+    }
+    
     for (int i = 0; i<validAccounts.size(); i++) { //write the details of each account in memory to the master account file
-        fileOut<<validAccounts.at(i).getNum()<<" "<<(validAccounts.at(i).getBalance())*100<<" "<<validAccounts.at(i).getName()<<endl;
+        for (int j = 0; j<validAccounts.size(); j++) {
+            if(acctNumSortArray[i] == stoi(validAccounts.at(j).getNum())){
+            fileOut<<validAccounts.at(j).getNum()<<" "<<(validAccounts.at(j).getBalance())*100<<" "<<validAccounts.at(j).getName()<<endl;
+                break;
+            }
+        }
     }
     fileOut.close();
 }
@@ -158,10 +186,32 @@ void writeNewMasterAccountsFile(const string MasterName,vector<Account> validAcc
 // Writes a full valid accounts list from scratch, overwriting existing accounts list in same file location. Inputs only account number to file and ends with invalid '0000000' number
 void writeNewValidAccountsFile(const string validName, vector<Account> &validAccounts){ //Valid account file contains just valid account numbers followed by an invalid number (In this case "0000000")
     
+    int acctNumSortArray[validAccounts.size()];
+    
     ofstream fileOut(validName.c_str());
     
-    for (int i = 0; i<validAccounts.size(); i++) { // simply write each valid account number to the validaccountfile
-                fileOut<<validAccounts.at(i).getNum()<<endl;
+    for (int i = 0; i<validAccounts.size(); i++) { // Load all account numbers into an array
+        try {
+            acctNumSortArray[i] = stoi(validAccounts.at(i).getNum());
+        } catch (const std::invalid_argument&) {
+            fileOut<<validAccounts.at(i).getNum();
+        }
+    }
+    
+    // Bubble sort the array
+    int temp;
+    for (int i = 0; i < validAccounts.size()-1; i++){
+        for (int j = 0; j < validAccounts.size()-i-1; j++){
+            if (acctNumSortArray[j] > acctNumSortArray[j+1]){
+                temp = acctNumSortArray[j];
+                acctNumSortArray[j] = acctNumSortArray[j+1];
+                acctNumSortArray[j+1] = temp;
+            }
+        }
+    }
+    
+    for (int i = 0; i<validAccounts.size(); i++) { //Write the acct numbers in the sorted array to the text file
+        fileOut<<acctNumSortArray[i]<<endl;
     }
     fileOut<<"0000000"<<endl;
     fileOut.close();
