@@ -1,0 +1,8 @@
+Login
+Machine
+1234567
+Deposit
+1234567
+10
+Logout
+Exit
